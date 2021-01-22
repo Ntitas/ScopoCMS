@@ -13,6 +13,5 @@ namespace ScopoCMS.Web.Data
             : base(options)
         {
         }
-        public DbSet<post> posts { get; set; }
     }
 }

@@ -56,7 +56,7 @@ namespace ScopoCMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(post post, IFormFile image )
+        public async Task<IActionResult> Create(Post post, IFormFile image )
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace ScopoCMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("postID,author,title,publishDate,category,tags,description,imagePath")] post post)
+        public async Task<IActionResult> Edit(int id, [Bind("postID,author,title,publishDate,category,tags,description,imagePath")] Post post)
         {
             if (id != post.postID)
             {

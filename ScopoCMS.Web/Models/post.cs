@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ScopoCMS.Web.Models
 {
-    public class post
+    public class Post
     {
         public int postID { get; set; }
         public string author { get; set; }
