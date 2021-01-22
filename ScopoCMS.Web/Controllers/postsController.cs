@@ -14,9 +14,9 @@ namespace ScopoCMS.Web.Controllers
 {
     public class postsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly CMSDbContext _context;
 
-        public postsController(ApplicationDbContext context)
+        public postsController(CMSDbContext context)
         {
             _context = context;
         }
