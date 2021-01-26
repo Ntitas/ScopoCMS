@@ -8,8 +8,15 @@ namespace ScopoCMS.Web.Models
 {
     public class CMSDbContext : DbContext
     {
+
+        public CMSDbContext(DbContextOptions<CMSDbContext> options)
+           : base(options)
+        {
+        }
+
         public DbSet<Post> posts { get; set; }
         public DbSet<Category> categories { get; set; }
         public DbSet<Section> sections { get; set; }
+
     }
 }

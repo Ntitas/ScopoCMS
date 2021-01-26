@@ -7,36 +7,40 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using ScopoCMS.Web.Data;
 using ScopoCMS.Web.Models;
+using ScopoCMS.Web.Services;
 
 namespace ScopoCMS.Web.Controllers
 {
     public class postsController : Controller
     {
-        private readonly CMSDbContext _context;
+        private PostService postService;
+       private CategoryService categoryService;
 
-        public postsController(CMSDbContext context)
+        public postsController(PostService postService,CategoryService categoryService)
         {
-            _context = context;
+
+            this.postService = postService;
+           this.categoryService = categoryService;
         }
 
         // GET: posts
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.posts.ToListAsync());
+            return View( postService.getAllPosts());
         }
 
         // GET: posts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.posts
-                .FirstOrDefaultAsync(m => m.postID == id);
+            var post = postService.getPostById(id);
             if (post == null)
             {
                 return NotFound();
@@ -48,6 +52,10 @@ namespace ScopoCMS.Web.Controllers
         // GET: posts/Create
         public IActionResult Create()
         {
+           var list=categoryService.getAllCategories();
+            ViewBag.list = new SelectList(list, "categoryID", "name");
+
+
             return View();
         }
 
@@ -56,33 +64,50 @@ namespace ScopoCMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Post post, IFormFile image )
+        public async Task<IActionResult> Create( Post post,IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
-                using (var ms = new MemoryStream())
+                var fileName = Path.GetFileName(imageFile.FileName);
+
+                //Assigning Unique Filename (Guid)
+                var myUniqueFileName = Convert.ToString(Guid.NewGuid());
+
+                //Getting file Extension
+                var fileExtension = Path.GetExtension(fileName);
+
+                // concatenating  FileName + FileExtension
+                var newFileName = String.Concat(myUniqueFileName, fileExtension);
+
+                // Combines two strings into a path.
+                var filepath =
+        new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images")).Root + $@"{newFileName}";
+
+                using (FileStream fs = System.IO.File.Create(filepath))
                 {
-                    image.CopyTo(ms);
-                    post.image = ms.ToArray();
+                    imageFile.CopyTo(fs);
+                    fs.Flush();
                 }
 
 
-                _context.Add(post);
-                await _context.SaveChangesAsync();
+                post.imagePath = "~/Images/"+newFileName  ;
+
+
+                postService.CreatePost(post);
                 return RedirectToAction(nameof(Index));
             }
             return View(post);
         }
 
         // GET: posts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.posts.FindAsync(id);
+            var post = postService.getPostById(id);
             if (post == null)
             {
                 return NotFound();
@@ -95,7 +120,7 @@ namespace ScopoCMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("postID,author,title,publishDate,category,tags,description,imagePath")] Post post)
+        public IActionResult Edit(int id, [Bind("postID,author,title,publishDate,category,tags,description,imagePath")] Post post)
         {
             if (id != post.postID)
             {
@@ -106,12 +131,11 @@ namespace ScopoCMS.Web.Controllers
             {
                 try
                 {
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
+                    postService.UpdatePost(post);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!postExists(post.postID))
+                    if (postService.getPostById(id)==null)
                     {
                         return NotFound();
                     }
@@ -126,15 +150,14 @@ namespace ScopoCMS.Web.Controllers
         }
 
         // GET: posts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.posts
-                .FirstOrDefaultAsync(m => m.postID == id);
+            var post = postService.getPostById(id);
             if (post == null)
             {
                 return NotFound();
@@ -146,17 +169,13 @@ namespace ScopoCMS.Web.Controllers
         // POST: posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var post = await _context.posts.FindAsync(id);
-            _context.posts.Remove(post);
-            await _context.SaveChangesAsync();
+            var post = postService.getPostById(id);
+            postService.DeletePost(post);
+          
             return RedirectToAction(nameof(Index));
         }
 
-        private bool postExists(int id)
-        {
-            return _context.posts.Any(e => e.postID == id);
-        }
     }
 }

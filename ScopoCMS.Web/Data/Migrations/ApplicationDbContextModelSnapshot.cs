@@ -219,7 +219,22 @@ namespace ScopoCMS.Web.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ScopoCMS.Web.Models.post", b =>
+            modelBuilder.Entity("ScopoCMS.Web.Models.Category", b =>
+                {
+                    b.Property<int>("categoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("categoryID");
+
+                    b.ToTable("categories");
+                });
+
+            modelBuilder.Entity("ScopoCMS.Web.Models.Post", b =>
                 {
                     b.Property<int>("postID")
                         .ValueGeneratedOnAdd()
@@ -229,8 +244,8 @@ namespace ScopoCMS.Web.Data.Migrations
                     b.Property<string>("author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("category")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("categoryID")
+                        .HasColumnType("int");
 
                     b.Property<string>("description")
                         .HasColumnType("nvarchar(max)");
@@ -241,6 +256,9 @@ namespace ScopoCMS.Web.Data.Migrations
                     b.Property<DateTime>("publishDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("sectionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("tags")
                         .HasColumnType("nvarchar(max)");
 
@@ -249,7 +267,26 @@ namespace ScopoCMS.Web.Data.Migrations
 
                     b.HasKey("postID");
 
+                    b.HasIndex("categoryID");
+
+                    b.HasIndex("sectionId");
+
                     b.ToTable("posts");
+                });
+
+            modelBuilder.Entity("ScopoCMS.Web.Models.Section", b =>
+                {
+                    b.Property<int>("sectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("sectionId");
+
+                    b.ToTable("sections");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -301,6 +338,31 @@ namespace ScopoCMS.Web.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ScopoCMS.Web.Models.Post", b =>
+                {
+                    b.HasOne("ScopoCMS.Web.Models.Category", "Category")
+                        .WithMany("Posts")
+                        .HasForeignKey("categoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ScopoCMS.Web.Models.Section", null)
+                        .WithMany("Posts")
+                        .HasForeignKey("sectionId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ScopoCMS.Web.Models.Category", b =>
+                {
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("ScopoCMS.Web.Models.Section", b =>
+                {
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,13 +12,17 @@ namespace ScopoCMS.Web.Models
         public string title { get; set; }
 
         public DateTime publishDate { get; set; }
-        public string category { get; set; }
+        public int   categoryID { get; set; }
 
         public string tags { get; set; }
 
         public string description { get; set; }
 
-        public byte[] image { get; set; }
+       // public byte[] image { get; set; }
+
+        public string imagePath { get; set; }
+
+        public virtual Category Category { get; set; }
 
         
 

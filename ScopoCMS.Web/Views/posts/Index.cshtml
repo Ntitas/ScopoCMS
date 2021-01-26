@@ -6,6 +6,8 @@
 
 <h1>Index</h1>
 
+
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -22,7 +24,7 @@
                 @Html.DisplayNameFor(model => model.publishDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.category)
+                @Html.DisplayNameFor(model => model.categoryID)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.tags)
@@ -31,41 +33,51 @@
                 @Html.DisplayNameFor(model => model.description)
             </th>
             <th>
- 
+
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.author)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.publishDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.tags)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.description)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.author)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.publishDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.categoryID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tags)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    <img src="@Url.Content(item.imagePath
 
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.postID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.postID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.postID">Delete</a>
-            </td>
-        </tr>
-}
+
+
+
+
+
+
+                     )" />  @item.imagePath
+
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.postID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.postID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.postID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

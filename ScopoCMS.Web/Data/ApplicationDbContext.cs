@@ -13,5 +13,6 @@ namespace ScopoCMS.Web.Data
             : base(options)
         {
         }
+
     }
 }
