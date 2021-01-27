@@ -10,8 +10,8 @@ namespace ScopoCMS.Web.Services
 {
     public class CategoryService
     {
-        private readonly ApplicationDbContext dbContext;
-        public CategoryService(ApplicationDbContext dbContext)
+        private readonly CMSDbContext dbContext;
+        public CategoryService(CMSDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -38,11 +38,18 @@ namespace ScopoCMS.Web.Services
             dbContext.Update(category);
             dbContext.SaveChanges();
         }
-        public void Delete(int? id)
+        public void Delete(int id)
         {
             var category=dbContext.categories.Find(id);
             dbContext.Remove(category);
             dbContext.SaveChanges();
+        }
+
+        public List<Post> getPostsByCategoryID(int id)
+        {
+            var res = (from s in dbContext.posts where s.categoryID == id 
+                       select s).ToList();
+            return res;
         }
     }
 }

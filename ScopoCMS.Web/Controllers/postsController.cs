@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +15,7 @@ using ScopoCMS.Web.Services;
 
 namespace ScopoCMS.Web.Controllers
 {
+
     public class postsController : Controller
     {
         private PostService postService;
@@ -29,6 +31,7 @@ namespace ScopoCMS.Web.Controllers
         // GET: posts
         public IActionResult Index()
         {
+      
             return View( postService.getAllPosts());
         }
 
@@ -112,6 +115,9 @@ namespace ScopoCMS.Web.Controllers
             {
                 return NotFound();
             }
+            var list = categoryService.getAllCategories();
+            ViewBag.list = new SelectList(list, "categoryID", "name");
+
             return View(post);
         }
 
@@ -120,7 +126,7 @@ namespace ScopoCMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("postID,author,title,publishDate,category,tags,description,imagePath")] Post post)
+        public IActionResult Edit(int id, [Bind("postID,author,title,publishDate,categoryID,tags,description,imagePath")] Post post , IFormFile imageFile)
         {
             if (id != post.postID)
             {
@@ -131,6 +137,29 @@ namespace ScopoCMS.Web.Controllers
             {
                 try
                 {
+                    var fileName = Path.GetFileName(imageFile.FileName);
+
+                    //Assigning Unique Filename (Guid)
+                    var myUniqueFileName = Convert.ToString(Guid.NewGuid());
+
+                    //Getting file Extension
+                    var fileExtension = Path.GetExtension(fileName);
+
+                    // concatenating  FileName + FileExtension
+                    var newFileName = String.Concat(myUniqueFileName, fileExtension);
+
+                    // Combines two strings into a path.
+                    var filepath =
+            new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images")).Root + $@"{newFileName}";
+
+                    using (FileStream fs = System.IO.File.Create(filepath))
+                    {
+                        imageFile.CopyTo(fs);
+                        fs.Flush();
+                    }
+
+
+                    post.imagePath = "~/Images/" + newFileName;
                     postService.UpdatePost(post);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -173,8 +202,8 @@ namespace ScopoCMS.Web.Controllers
         {
             var post = postService.getPostById(id);
             postService.DeletePost(post);
-          
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction("Index");
         }
 
     }

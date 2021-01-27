@@ -54,7 +54,7 @@ namespace ScopoCMS.Web.Controllers
         }
 
         // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
@@ -101,7 +101,7 @@ namespace ScopoCMS.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View();
         }
 
         // GET: Categories/Delete/5
@@ -120,7 +120,7 @@ namespace ScopoCMS.Web.Controllers
                 return NotFound();
             }
 
-            return View(category);
+            return View();
         }
 
         // POST: Categories/Delete/5
@@ -128,6 +128,7 @@ namespace ScopoCMS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            categoryService.Delete(id);
             //var category = await _context.categories.FindAsync(id);
             //_context.categories.Remove(category);
             //await _context.SaveChangesAsync();

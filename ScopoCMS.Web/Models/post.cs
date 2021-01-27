@@ -18,8 +18,6 @@ namespace ScopoCMS.Web.Models
 
         public string description { get; set; }
 
-       // public byte[] image { get; set; }
-
         public string imagePath { get; set; }
 
         public virtual Category Category { get; set; }

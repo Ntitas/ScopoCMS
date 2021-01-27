@@ -9,9 +9,9 @@ namespace ScopoCMS.Web.Services
 {
     public class PostService
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly CMSDbContext dbContext;
 
-        public PostService( ApplicationDbContext dbContext)
+        public PostService( CMSDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

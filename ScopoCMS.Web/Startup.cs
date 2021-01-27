@@ -31,6 +31,7 @@ namespace ScopoCMS.Web
         {
             services.AddTransient<CategoryService>();
             services.AddTransient<PostService>();
+            services.AddTransient<SectionService>();
            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -41,7 +42,7 @@ namespace ScopoCMS.Web
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
         }

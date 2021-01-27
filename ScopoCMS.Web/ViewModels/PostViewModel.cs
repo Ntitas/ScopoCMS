@@ -7,5 +7,6 @@ namespace ScopoCMS.Web.ViewModels
 {
     public class PostViewModel
     {
+     
     }
 }

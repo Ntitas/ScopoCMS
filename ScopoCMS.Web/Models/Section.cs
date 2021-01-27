@@ -9,10 +9,7 @@ namespace ScopoCMS.Web.Models
     {
         public int sectionId { get; set; }
         public string name { get; set; }
-        public Section()
-        {
-            Posts = new List<Post>();
-        }
+       
 
         public virtual ICollection<Post> Posts { get; set; }
     }

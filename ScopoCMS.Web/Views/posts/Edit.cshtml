@@ -29,9 +29,8 @@
                 <span asp-validation-for="publishDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="categoryID" class="control-label"></label>
-                <input asp-for="categoryID" class="form-control" />
-                <span asp-validation-for="categoryID" class="text-danger"></span>
+                <label asp-for="categoryID" class="control-label">Category</label>
+                <select asp-for="categoryID" class="form-control" asp-items="@ViewBag.list"></select>
             </div>
             <div class="form-group">
                 <label asp-for="tags" class="control-label"></label>
@@ -43,8 +42,13 @@
                 <input asp-for="description" class="form-control" />
                 <span asp-validation-for="description" class="text-danger"></span>
             </div>
-            <div class="form-group">
 
+            <div class="form-group">
+                <div class="form-group">
+                    <label class="control-label">Upload Post Image</label>
+                    <input type="file" name="imageFile" id="imageFile" class="form-control" />
+
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
