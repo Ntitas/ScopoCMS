@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ScopoCMS.Web.Models;
 using System;
@@ -9,8 +10,11 @@ using System.Threading.Tasks;
 
 namespace ScopoCMS.Web.Controllers
 {
+    [Authorize]
+
     public class HomeController : Controller
     {
+       
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -22,6 +26,7 @@ namespace ScopoCMS.Web.Controllers
         {
             return View();
         }
+        [Authorize(Roles ="Admin")]
         public IActionResult AdminPanel()
         {
             return View();
