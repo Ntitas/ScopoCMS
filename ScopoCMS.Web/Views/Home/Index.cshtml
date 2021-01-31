@@ -1,4 +1,8 @@
-﻿@{
+﻿@*@model   IEnumerable< ScopoCMS.Web.Models.Section>*@
+
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -130,16 +134,25 @@
         <div class="latestContainer">
             <h1>Latest</h1>
             <div class="latestContents">
+                @*@foreach (var item in Model)
+                {
+                    @foreach(var post in item.Posts)
+                    {
+                       
 
-                <div class="latestContent">
-                    <img src="hh.jpg" alt="">
-                    <p>
-                        REPORTAGE
-                        A Grave Shock in Kashmir
-                        Kashmir’s ‘stranger than fiction’ facts resurfaced when a cop tasked to intern insurgents in ‘godforsaken’ land received his sibling’s dead body at the fag-end of the plagued year. But then, what happened…
-                    </p>
+                    <div class="latestContent">
+                        <img src=@Url.Content(post.imagePath) alt="">
+                        <p>
+                            @post.title
+                            @post.description
+                        </p>
 
-                </div>
+                    </div>
+                        }
+
+                    }*@
+
+
                 <div class="latestContent">
                     <img src="hh.jpg" alt="">
                     <p>

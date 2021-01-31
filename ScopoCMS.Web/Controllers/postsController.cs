@@ -181,11 +181,7 @@ namespace ScopoCMS.Web.Controllers
         // GET: posts/Delete/5
         public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
+         
             var post = postService.getPostById(id);
             if (post == null)
             {
@@ -200,8 +196,8 @@ namespace ScopoCMS.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var post = postService.getPostById(id);
-            postService.DeletePost(post);
+         
+            postService.DeletePost(id);
 
             return RedirectToAction("Index");
         }

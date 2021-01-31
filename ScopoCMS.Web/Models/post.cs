@@ -12,7 +12,7 @@ namespace ScopoCMS.Web.Models
         public string title { get; set; }
 
         public DateTime publishDate { get; set; }
-        public int   categoryID { get; set; }
+        public int categoryID { get; set; }
 
         public string tags { get; set; }
 
@@ -21,6 +21,8 @@ namespace ScopoCMS.Web.Models
         public string imagePath { get; set; }
 
         public virtual Category Category { get; set; }
+
+        public virtual ICollection<Section> Sections {get;set;}
 
         
 

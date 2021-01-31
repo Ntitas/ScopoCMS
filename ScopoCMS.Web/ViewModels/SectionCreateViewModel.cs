@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ScopoCMS.Web.Models
+namespace ScopoCMS.Web.ViewModels
 {
-    public class Section
+    public class SectionCreateViewModel
     {
         public int sectionId { get; set; }
         public string name { get; set; }
-        public virtual ICollection<Post> Posts { get; set; }
+
+        public int[] postId { get; set; }
     }
 }

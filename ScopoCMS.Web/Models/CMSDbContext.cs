@@ -17,6 +17,9 @@ namespace ScopoCMS.Web.Models
         public DbSet<Post> posts { get; set; }
         public DbSet<Category> categories { get; set; }
         public DbSet<Section> sections { get; set; }
+        public DbSet<PostSection> postSections { get; set; }
 
     }
+
+  
 }

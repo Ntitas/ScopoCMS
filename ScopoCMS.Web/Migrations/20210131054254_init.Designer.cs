@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScopoCMS.Web.Models;
 
 namespace ScopoCMS.Web.Migrations
 {
     [DbContext(typeof(CMSDbContext))]
-    partial class CMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210131054254_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,21 +86,6 @@ namespace ScopoCMS.Web.Migrations
                     b.ToTable("posts");
                 });
 
-            modelBuilder.Entity("ScopoCMS.Web.Models.PostSection", b =>
-                {
-                    b.Property<int>("PostID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SectionID")
-                        .HasColumnType("int");
-
-                    b.HasIndex("PostID");
-
-                    b.HasIndex("SectionID");
-
-                    b.ToTable("postSections");
-                });
-
             modelBuilder.Entity("ScopoCMS.Web.Models.Section", b =>
                 {
                     b.Property<int>("sectionId")
@@ -138,25 +125,6 @@ namespace ScopoCMS.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("ScopoCMS.Web.Models.PostSection", b =>
-                {
-                    b.HasOne("ScopoCMS.Web.Models.Post", "post")
-                        .WithMany()
-                        .HasForeignKey("PostID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ScopoCMS.Web.Models.Section", "section")
-                        .WithMany()
-                        .HasForeignKey("SectionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("post");
-
-                    b.Navigation("section");
                 });
 
             modelBuilder.Entity("ScopoCMS.Web.Models.Category", b =>

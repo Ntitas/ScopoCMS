@@ -36,9 +36,12 @@ namespace ScopoCMS.Web.Services
             dbContext.Update(post);
             dbContext.SaveChanges();
         }
-        public void DeletePost(Post post)
+        public void DeletePost(int id)
+
         {
-            dbContext.Remove(post);
+            
+            dbContext.Remove(dbContext.posts.Find(id));
+            dbContext.SaveChanges();
         }
     }
 }
