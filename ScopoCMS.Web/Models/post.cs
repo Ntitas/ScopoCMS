@@ -7,6 +7,7 @@ namespace ScopoCMS.Web.Models
 {
     public class Post
     {
+      
         public int postID { get; set; }
         public string author { get; set; }
         public string title { get; set; }
@@ -22,7 +23,7 @@ namespace ScopoCMS.Web.Models
 
         public virtual Category Category { get; set; }
 
-        public virtual ICollection<Section> Sections {get;set;}
+        
 
         
 

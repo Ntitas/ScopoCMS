@@ -7,8 +7,8 @@ namespace ScopoCMS.Web.Models
 {
     public class Section
     {
+       
         public int sectionId { get; set; }
         public string name { get; set; }
-        public virtual ICollection<Post> Posts { get; set; }
     }
 }

@@ -32,27 +32,8 @@ namespace ScopoCMS.Web.Controllers
        
         public IActionResult Index()
         {
-            List<PostViewModel> postVM = new List<PostViewModel>();
-          
-
-            var pm = (from r in sectionService.getPostinSection()
-                     join p in postService.getAllPosts() on r.PostID equals p.postID
-                     join s in sectionService.getAllSection() on r.SectionID equals s.sectionId
-                     select new PostViewModel
-                     {
-                         postID = p.postID,
-                         author = p.author,
-                         title = p.title,
-                         publishDate = p.publishDate,
-                         sectionId = s.sectionId,
-                         sectionname = s.name,
-                         description = p.description,
-                         imagePath = p.imagePath
-                     }).ToList();
-
-           
-           
-            return View();
+            var res = sectionService.getPostinSection();
+            return View(res);
         }
         [Authorize(Roles = "Admin")]
         public IActionResult AdminPanel()

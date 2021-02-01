@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ScopoCMS.Web.Migrations
 {
-    public partial class CMSDbMigration : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,6 +18,20 @@ namespace ScopoCMS.Web.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_categories", x => x.categoryID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostSection",
+                columns: table => new
+                {
+                    PostSectionID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PostID = table.Column<int>(type: "int", nullable: false),
+                    SectionID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostSection", x => x.PostSectionID);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,8 +59,7 @@ namespace ScopoCMS.Web.Migrations
                     categoryID = table.Column<int>(type: "int", nullable: false),
                     tags = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    imagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    sectionId = table.Column<int>(type: "int", nullable: true)
+                    imagePath = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,23 +70,12 @@ namespace ScopoCMS.Web.Migrations
                         principalTable: "categories",
                         principalColumn: "categoryID",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_posts_sections_sectionId",
-                        column: x => x.sectionId,
-                        principalTable: "sections",
-                        principalColumn: "sectionId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_posts_categoryID",
                 table: "posts",
                 column: "categoryID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_posts_sectionId",
-                table: "posts",
-                column: "sectionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -82,10 +84,13 @@ namespace ScopoCMS.Web.Migrations
                 name: "posts");
 
             migrationBuilder.DropTable(
-                name: "categories");
+                name: "PostSection");
 
             migrationBuilder.DropTable(
                 name: "sections");
+
+            migrationBuilder.DropTable(
+                name: "categories");
         }
     }
 }

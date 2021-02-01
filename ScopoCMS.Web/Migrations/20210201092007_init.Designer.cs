@@ -10,8 +10,8 @@ using ScopoCMS.Web.Models;
 namespace ScopoCMS.Web.Migrations
 {
     [DbContext(typeof(CMSDbContext))]
-    [Migration("20210131072353_init2")]
-    partial class init2
+    [Migration("20210201092007_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,21 +20,6 @@ namespace ScopoCMS.Web.Migrations
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
-
-            modelBuilder.Entity("PostSection", b =>
-                {
-                    b.Property<int>("PostspostID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SectionssectionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PostspostID", "SectionssectionId");
-
-                    b.HasIndex("SectionssectionId");
-
-                    b.ToTable("PostSection");
-                });
 
             modelBuilder.Entity("ScopoCMS.Web.Models.Category", b =>
                 {
@@ -86,6 +71,24 @@ namespace ScopoCMS.Web.Migrations
                     b.ToTable("posts");
                 });
 
+            modelBuilder.Entity("ScopoCMS.Web.Models.PostSection", b =>
+                {
+                    b.Property<int>("PostSectionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("PostID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SectionID")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostSectionID");
+
+                    b.ToTable("PostSection");
+                });
+
             modelBuilder.Entity("ScopoCMS.Web.Models.Section", b =>
                 {
                     b.Property<int>("sectionId")
@@ -99,21 +102,6 @@ namespace ScopoCMS.Web.Migrations
                     b.HasKey("sectionId");
 
                     b.ToTable("sections");
-                });
-
-            modelBuilder.Entity("PostSection", b =>
-                {
-                    b.HasOne("ScopoCMS.Web.Models.Post", null)
-                        .WithMany()
-                        .HasForeignKey("PostspostID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ScopoCMS.Web.Models.Section", null)
-                        .WithMany()
-                        .HasForeignKey("SectionssectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ScopoCMS.Web.Models.Post", b =>

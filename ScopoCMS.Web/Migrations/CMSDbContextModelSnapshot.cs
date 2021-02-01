@@ -19,21 +19,6 @@ namespace ScopoCMS.Web.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
-            modelBuilder.Entity("PostSection", b =>
-                {
-                    b.Property<int>("PostspostID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SectionssectionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PostspostID", "SectionssectionId");
-
-                    b.HasIndex("SectionssectionId");
-
-                    b.ToTable("PostSection");
-                });
-
             modelBuilder.Entity("ScopoCMS.Web.Models.Category", b =>
                 {
                     b.Property<int>("categoryID")
@@ -86,17 +71,20 @@ namespace ScopoCMS.Web.Migrations
 
             modelBuilder.Entity("ScopoCMS.Web.Models.PostSection", b =>
                 {
+                    b.Property<int>("PostSectionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
                     b.Property<int>("PostID")
                         .HasColumnType("int");
 
                     b.Property<int>("SectionID")
                         .HasColumnType("int");
 
-                    b.HasIndex("PostID");
+                    b.HasKey("PostSectionID");
 
-                    b.HasIndex("SectionID");
-
-                    b.ToTable("postSections");
+                    b.ToTable("PostSection");
                 });
 
             modelBuilder.Entity("ScopoCMS.Web.Models.Section", b =>
@@ -114,21 +102,6 @@ namespace ScopoCMS.Web.Migrations
                     b.ToTable("sections");
                 });
 
-            modelBuilder.Entity("PostSection", b =>
-                {
-                    b.HasOne("ScopoCMS.Web.Models.Post", null)
-                        .WithMany()
-                        .HasForeignKey("PostspostID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ScopoCMS.Web.Models.Section", null)
-                        .WithMany()
-                        .HasForeignKey("SectionssectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ScopoCMS.Web.Models.Post", b =>
                 {
                     b.HasOne("ScopoCMS.Web.Models.Category", "Category")
@@ -138,25 +111,6 @@ namespace ScopoCMS.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("ScopoCMS.Web.Models.PostSection", b =>
-                {
-                    b.HasOne("ScopoCMS.Web.Models.Post", "post")
-                        .WithMany()
-                        .HasForeignKey("PostID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ScopoCMS.Web.Models.Section", "section")
-                        .WithMany()
-                        .HasForeignKey("SectionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("post");
-
-                    b.Navigation("section");
                 });
 
             modelBuilder.Entity("ScopoCMS.Web.Models.Category", b =>

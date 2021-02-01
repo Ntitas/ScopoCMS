@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ScopoCMS.Web.Data;
 using ScopoCMS.Web.Models;
+using ScopoCMS.Web.ViewModels;
 
 namespace ScopoCMS.Web.Services
 {
@@ -16,26 +17,33 @@ namespace ScopoCMS.Web.Services
             this.dbContext = dbContext;
         }
 
-        public void Create( Section section)
+        public void Create(SectionCreateViewModel scvm)
         {
-            
+            Section section = new Section();
+            section.sectionId = scvm.sectionId;
+            section.name = scvm.name;
             dbContext.Add(section);
             dbContext.SaveChanges();
         }
-        public void CreateSectionTPost(Section section)
+        public void CreateSectionTPost(SectionCreateViewModel scvm)
         {
-            PostSection postSection = new PostSection();
-            postSection.SectionID = section.sectionId;
-            postSection.section = section;
-            foreach(var i in section.Posts)
+        
+            
+
+            foreach (var i in scvm.postId)
             {
-                postSection.PostID = i.postID;
-                postSection.post = dbContext.posts.Find(i.postID);
+                PostSection postSection = new PostSection();
+                var sec = (from s in dbContext.sections
+                          where s.name==scvm.name select new Section { 
+                          sectionId=s.sectionId,
+                          name=s.name}).FirstOrDefault();
+                postSection.SectionID = sec.sectionId;
+                postSection.PostID = i;
                 dbContext.Add(postSection);
                 dbContext.SaveChanges();
 
             }
-       
+
             return;
         }
         public void Update(Section section)
@@ -62,10 +70,25 @@ namespace ScopoCMS.Web.Services
             dbContext.Update(section);
             dbContext.SaveChanges();
         }
-        public IEnumerable<PostSection> getPostinSection()
+        public IEnumerable<PostViewModel> getPostinSection()
         {
-            var res = dbContext.postSections.ToList();
+            var res = (from ps in dbContext.PostSection
+                       join p in dbContext.posts on ps.PostID equals p.postID
+                       join s in dbContext.sections on ps.SectionID equals s.sectionId
+                       select new PostViewModel
+                       {
+                           postID=ps.PostID,
+                           author=p.author,
+                           title=p.title,
+                           publishDate=p.publishDate,
+                           categoryID=p.categoryID,
+                           tags=p.tags,
+                           description=p.description,
+                           imagePath=p.imagePath,
+                           sectionId=s.sectionId,
+                           sectionname=s.name
 
+                       }).AsEnumerable();
             return res;
         }
     }

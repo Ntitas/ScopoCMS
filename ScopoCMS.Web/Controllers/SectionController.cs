@@ -42,23 +42,9 @@ namespace ScopoCMS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Section section = new Section();
-                section.sectionId = scvm.sectionId;
-                section.name = scvm.name;
-                List<Post> posts = new List<Post>();
-               
-                foreach(var i  in scvm.postId)
-                {
-                    var post = postService.getPostById(i);
-                    posts.Add(post);
-
-              
-
-                }
-                section.Posts = posts;
              
-                sectionService.Create(section);
-                sectionService.CreateSectionTPost(section);
+                sectionService.Create(scvm);
+                sectionService.CreateSectionTPost(scvm);
                 //     return RedirectToAction(nameof(Index));
 
             }

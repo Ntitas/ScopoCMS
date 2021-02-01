@@ -1,10 +1,17 @@
-﻿@*@model   IEnumerable< ScopoCMS.Web.Models.Section>*@
+﻿@model   IEnumerable< ScopoCMS.Web.ViewModels.PostViewModel>
 
 
 
 @{
+
     ViewData["Title"] = "Home Page";
+    
+
+
 }
+
+
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -80,99 +87,30 @@
 
         </div>
 
-
+       
         <div class="picContainer">
-            <div class="singlePic">
-                <div class="singlePicContent">
-                    <p>
-                        Three Poems: Whispers of a Broken Spring, Slow Rain, Departure
-                        BY FAIZAN HABIB WANI
-                        JANUARY 19, 2021
-                        3 MINS READ
-                        0 SHARES
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="dualPic">
-                <div class="pic">
-                    <div class="dualPicContent">
-                        <p>
-                            Three Poems: Whispers of a Broken Spring, Slow Rain, Departure
-                            BY FAIZAN HABIB WANI
-                            JANUARY 19, 2021
-                            3 MINS READ
-                            0 SHARES
-                        </p>
-                    </div>
-                </div>
-                <div class="pic">
-                    <div class="dualPicContent">
-                        <p>
-                            Three Poems: Whispers of a Broken Spring, Slow Rain, Departure
-                            BY FAIZAN HABIB WANI
-                            JANUARY 19, 2021
-                            3 MINS READ
-                            0 SHARES
-                        </p>
-
-                    </div>
-                </div>
-
-
-
-
-
-            </div>
-
-
-
 
         </div>
         <div class="latestContainer">
             <h1>Latest</h1>
             <div class="latestContents">
-                @*@foreach (var item in Model)
+                @foreach (var item in Model)
                 {
-                    @foreach(var post in item.Posts)
+                    @if(item.sectionname=="Latest")
                     {
                        
 
                     <div class="latestContent">
-                        <img src=@Url.Content(post.imagePath) alt="">
+                        <img src=@Url.Content(item.imagePath) alt="">
                         <p>
-                            @post.title
-                            @post.description
+                            @item.title
+                            @item.description
                         </p>
 
                     </div>
                         }
 
-                    }*@
-
-
-                <div class="latestContent">
-                    <img src="hh.jpg" alt="">
-                    <p>
-                        REPORTAGE
-                        A Grave Shock in Kashmir
-                        Kashmir’s ‘stranger than fiction’ facts resurfaced when a cop tasked to intern insurgents in ‘godforsaken’ land received his sibling’s dead body at the fag-end of the plagued year. But then, what happened…
-                    </p>
-
-
-                </div>
-                <div class="latestContent">
-                    <img src="hh.jpg" alt="">
-                    <p>
-                        REPORTAGE
-                        A Grave Shock in Kashmir
-                        Kashmir’s ‘stranger than fiction’ facts resurfaced when a cop tasked to intern insurgents in ‘godforsaken’ land received his sibling’s dead body at the fag-end of the plagued year. But then, what happened…
-                    </p>
-
-
-                </div>
+                    }
 
             </div>
             <button>Show More Post</button>
@@ -183,11 +121,19 @@
         <!-- current-Issue -->
         <div class="currentIssueContainer">
             <h2>Current Issue</h2>
+           
             <div class="currentIssueContents">
-                <div class="currentIssueImageContent">
-                    <img src="hh.jpg" alt="">
+                @foreach (var item in Model)
+                {
+                    @if (item.sectionname == "Current Issue")
+                    {<div class="currentIssueImageContent">
+                            <img src=@Url.Content(item.imagePath) alt="">
 
-                </div>
+                        </div>
+
+                    }
+                }
+
                 <div class="currentIssueBuyContent">
                     <span>Get yours Now</span>
                     <button>Buy Now</button>
@@ -209,7 +155,28 @@
             <div class="web">
                 <h1>Web Exclusive</h1>
 
-                <div class="webContent">
+                @foreach (var item in Model)
+                {
+                    @if (item.sectionname == "Web exclusive")
+                    {
+                        <div class="webContent">
+                            <img src=@Url.Content(item.imagePath) alt="">
+                            <div class="webContentItem">
+                                <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
+                                <h4>@item.title</h4>
+                                <p>
+                                    BY @item.author
+                                    @item.publishDate
+                                    6 MINS READ
+                                    0 SHARES
+                                </p>
+                            </div>
+                        </div>
+
+                    }
+                }
+
+                @*<div class="webContent">
                     <img src="hh.jpg" alt="">
                     <div class="webContentItem">
                         <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
@@ -260,7 +227,7 @@
                             0 SHARES
                         </p>
                     </div>
-                </div>
+                </div>*@
 
 
             </div>
@@ -268,7 +235,27 @@
                 <h1>Most Popular</h1>
                 <div class="mostPopularContent">
                     <div class="mostpopularleft">
-                        <div class="mostpopularleftContent">
+                        @foreach (var item in Model)
+                        {
+                            @if (item.sectionname == "Most Popular")
+                            {
+                                <div class="mostpopularleftContent">
+                                    <img src=@Url.Content(item.imagePath) alt="">
+                                    <div class="webContentItem">
+                                        <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
+                                        <h4>@item.title</h4>
+                                        <p>
+                                            BY @item.author
+                                            JUNE 7, 2020
+                                            6 MINS READ
+                                            0 SHARES
+                                        </p>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                        @*<div class="mostpopularleftContent">
                             <img src="hh.jpg" alt="">
                             <div class="webContentItem">
                                 <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
@@ -306,11 +293,30 @@
                                     0 SHARES
                                 </p>
                             </div>
-                        </div>
+                        </div>*@
 
                     </div>
                     <div class="mostpopularright">
-                        <div class="mostpopularrightContent">
+                        @foreach (var item in Model)
+                        {
+                            @if (item.sectionname == "Most Popular")
+                            {
+                                <div class="mostpopularrightContent">
+                                    <img src=@Url.Content(item.imagePath) alt="">
+                                    <div class="webContentItem">
+                                        <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
+                                        <h4>@item.title</h4>
+                                        <p>BY @item.author</p>
+                                        <p>@item.publishDate.ToShortDateString();</p> 
+                                        <p> 6 MINS READ
+                                            0 SHARES
+                                        </p>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                        @*<div class="mostpopularrightContent">
                             <img src="hh.jpg" alt="">
                             <div class="webContentItem">
                                 <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
@@ -349,7 +355,7 @@
                                 </p>
                             </div>
 
-                        </div>
+                        </div>*@
                     </div>
 
                 </div>

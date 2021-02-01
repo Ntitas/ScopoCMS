@@ -193,6 +193,12 @@
     .mostPopularContent{
         flex-direction: column;
     }
+    .mostpopular{
+        width:100%;
+    }
+    .web{
+        width:100%;
+    }
 
 }
 .mostpopular>h1{
