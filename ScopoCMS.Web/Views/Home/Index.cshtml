@@ -5,7 +5,7 @@
 @{
 
     ViewData["Title"] = "Home Page";
-    
+   
 
 
 }
@@ -31,86 +31,31 @@
 
     <!-- header -->
     <div class="container">
-        <div class="header">
-            <div class="topHeader">
-                <div class="subscribe">
-                    <button id="subscribe">Subscribe</button>
-                </div>
-                <img id="logo" style="height: 100px; width: 100px;" src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg">
-            </div>
+        <partial name="_HeaderPartial" />
 
-
-            <div class="navBar">
-                <nav style="width: 100%; height: 30px;" class="navbar navbar-expand-lg navbar-light bg-light">
-                    <a class="navbar-brand" href="#">Navbar</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Home/AdminPanel">Admin Panel</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Dropdown
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#">Disabled</a>
-                            </li>
-                        </ul>
-                        <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </form>
-                    </div>
-                </nav>
-            </div>
-
-
-
-
-            <div class="supportUs">
-                <button>Support US</button>
-            </div>
-
-        </div>
-
-       
         <div class="picContainer">
-
+            <partial name="_Top3Partial" />   
         </div>
         <div class="latestContainer">
             <h1>Latest</h1>
             <div class="latestContents">
                 @foreach (var item in Model)
                 {
-                    @if(item.sectionname=="Latest")
+                    @if (item.sectionname == "Latest")
                     {
-                       
 
-                    <div class="latestContent">
-                        <img src=@Url.Content(item.imagePath) alt="">
-                        <p>
-                            @item.title
-                            @item.description
-                        </p>
 
-                    </div>
-                        }
+                        <div class="latestContent">
+                            <img src=@Url.Content(item.imagePath) alt="">
+                            <p>
+                                <a asp-action="SeePost" asp-controller="Posts" asp-route-id="@item.postID">@item.title</a>
+                                @item.description
+                            </p>
 
+                        </div>
                     }
+
+                }
 
             </div>
             <button>Show More Post</button>
@@ -121,7 +66,7 @@
         <!-- current-Issue -->
         <div class="currentIssueContainer">
             <h2>Current Issue</h2>
-           
+
             <div class="currentIssueContents">
                 @foreach (var item in Model)
                 {
@@ -307,8 +252,9 @@
                                         <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
                                         <h4>@item.title</h4>
                                         <p>BY @item.author</p>
-                                        <p>@item.publishDate.ToShortDateString();</p> 
-                                        <p> 6 MINS READ
+                                        <p>@item.publishDate.ToShortDateString();</p>
+                                        <p>
+                                            6 MINS READ
                                             0 SHARES
                                         </p>
                                     </div>

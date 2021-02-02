@@ -21,6 +21,12 @@ namespace ScopoCMS.Web.Services
             var res = dbContext.posts.ToList();
             return res;
         }
+        public IEnumerable<Post> getAllPostsByTags(string tags)
+        {
+            var res = (from p in dbContext.posts where p.tags == tags
+                       select p).AsEnumerable();
+            return res;
+        }
         public Post getPostById(int id)
         {
             var res = dbContext.posts.Find(id);

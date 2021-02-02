@@ -46,11 +46,28 @@ namespace ScopoCMS.Web.Services
 
             return;
         }
-        public void Update(Section section)
+        public void UpdateSectionContent(SectionCreateViewModel scvm)
         {
-            if (dbContext.sections.Find(section.sectionId) != null)
+            var res = (from ps in dbContext.PostSection where ps.SectionID == scvm.sectionId
+                       select ps).ToList();
+            foreach(var item in res)
             {
-                dbContext.Update(section);
+                dbContext.Remove(item);
+
+            }
+            dbContext.SaveChanges();
+            Section section = new Section();
+            section.sectionId = scvm.sectionId;
+            section.name = scvm.name;
+            dbContext.sections.Update(section);
+            dbContext.SaveChanges();
+            
+            foreach(var i in scvm.postId)
+            {
+                PostSection postSection = new PostSection();
+                postSection.PostID = i;
+                postSection.SectionID = scvm.sectionId;
+                dbContext.Update(postSection);
                 dbContext.SaveChanges();
             }
 
@@ -87,6 +104,50 @@ namespace ScopoCMS.Web.Services
                            imagePath=p.imagePath,
                            sectionId=s.sectionId,
                            sectionname=s.name
+
+                       }).AsEnumerable();
+            return res;
+        }
+        public IEnumerable<PostViewModel> getPostinSectionById(int id)
+        {
+            var res = (from ps in dbContext.PostSection
+                       join p in dbContext.posts on ps.PostID equals p.postID
+                       join s in dbContext.sections on ps.SectionID equals s.sectionId
+                       where s.sectionId==id
+                       select new PostViewModel
+                       {
+                           postID = ps.PostID,
+                           author = p.author,
+                           title = p.title,
+                           publishDate = p.publishDate,
+                           categoryID = p.categoryID,
+                           tags = p.tags,
+                           description = p.description,
+                           imagePath = p.imagePath,
+                           sectionId = s.sectionId,
+                           sectionname = s.name
+
+                       }).AsEnumerable();
+            return res;
+        }
+        public IEnumerable<PostViewModel> getPostinSectionByName(string name)
+        {
+            var res = (from ps in dbContext.PostSection
+                       join p in dbContext.posts on ps.PostID equals p.postID
+                       join s in dbContext.sections on ps.SectionID equals s.sectionId
+                       where s.name == name
+                       select new PostViewModel
+                       {
+                           postID = ps.PostID,
+                           author = p.author,
+                           title = p.title,
+                           publishDate = p.publishDate,
+                           categoryID = p.categoryID,
+                           tags = p.tags,
+                           description = p.description,
+                           imagePath = p.imagePath,
+                           sectionId = s.sectionId,
+                           sectionname = s.name
 
                        }).AsEnumerable();
             return res;

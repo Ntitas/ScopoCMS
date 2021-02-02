@@ -23,7 +23,8 @@ namespace ScopoCMS.Web.Controllers
         }
         public IActionResult Index()
         {
-
+            //var res = sectionService.getPostinSection();
+            
             return View();
         }
         public IActionResult Create()
@@ -50,5 +51,29 @@ namespace ScopoCMS.Web.Controllers
             }
             return View();
         }
+        public IActionResult Edit()
+        {
+
+           
+            ViewBag.list = new SelectList(postService.getAllPosts(), "postID", "title");
+            ViewBag.sec = new SelectList(sectionService.getAllSection(), "sectionId", "name");
+           
+
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(SectionCreateViewModel scvm)
+        {
+            if(ModelState.IsValid)
+            {
+                var res = scvm.sectionId;
+                sectionService.UpdateSectionContent(scvm);
+               
+            }
+            return View();
+        }
+
     }
 }

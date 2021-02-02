@@ -20,18 +20,21 @@ namespace ScopoCMS.Web.Controllers
     {
         private PostService postService;
        private CategoryService categoryService;
+        private SectionService sectionService;
 
-        public postsController(PostService postService,CategoryService categoryService)
+        public postsController(PostService postService,CategoryService categoryService,SectionService sectionService)
         {
 
             this.postService = postService;
            this.categoryService = categoryService;
+            this.sectionService = sectionService;
         }
 
         // GET: posts
         public IActionResult Index()
         {
-      
+          
+
             return View( postService.getAllPosts());
         }
 
@@ -91,6 +94,12 @@ namespace ScopoCMS.Web.Controllers
                     imageFile.CopyTo(fs);
                     fs.Flush();
                 }
+
+                var r = post.description.LastIndexOf('<');
+                var s = post.description.Substring(0, r);
+                var p = s.LastIndexOf('>');
+                var sd = s.Substring(p+1);
+                post.description=sd;
 
 
                 post.imagePath = "~/Images/"+newFileName  ;
@@ -200,6 +209,24 @@ namespace ScopoCMS.Web.Controllers
             postService.DeletePost(id);
 
             return RedirectToAction("Index");
+        }
+
+
+
+        public IActionResult SeePost(int id)
+        {
+            if (id >-1)
+            {
+                ViewBag.popular = sectionService.getPostinSectionByName("Most Popular");
+                
+                var post = postService.getPostById(id);
+                ViewBag.RelatedPosts = postService.getAllPostsByTags(post.tags);
+
+                return View(post);
+
+            }
+            return View();
+           
         }
 
     }

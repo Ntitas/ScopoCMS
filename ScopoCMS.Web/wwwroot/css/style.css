@@ -91,6 +91,7 @@
 }
 .latestContent{
     padding: 10px;
+    
    
 }
 
@@ -100,8 +101,9 @@
 
 }
 .latestContent>p{
-    height: 250px;
+    height: 200px;
     width: 350px;
+    overflow:hidden;
 
 }
 
@@ -296,9 +298,10 @@
 }
 
 .relatedPost>img{
-    height: 100px;
-    width: 200px;
+    height: 200px;
+    width: 300px;
     flex: 0.4;
+    object-fit:contain;
 
 }
 .relatedPost{
@@ -312,8 +315,17 @@
     .relatedPost{
         flex-direction: column;
     }
+    .relatedpostText>a{
+        text-decoration:none;
+
+    }
+    .relatedpostText>span
+    {
+        text-transform:capitalize;
+    }
     .relatedpostText>a>h1{
         font-size: 18px;
+        text-transform:capitalize;
     }
     .contentContainer{
         flex-direction: column;
