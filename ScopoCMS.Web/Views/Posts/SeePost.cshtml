@@ -22,7 +22,7 @@
 <body>
 
     <!-- header -->
-    <div class="container">
+    <div class="containerCust">
         <div class="header">
             <div class="topHeader">
                 <div class="subscribe">
@@ -58,10 +58,7 @@
             <div class="left_blogContent">
                 @if (Model != null)
                 {
-                    <p>
-                       @Model.description
-                    </p>
-
+                    @Html.Raw(Model.description);
 
                 }
 
@@ -93,6 +90,7 @@
                 </div>
 
             </div>
+        </div>
         </div>
 
 
@@ -137,42 +135,7 @@
         </div>
 
         <!-- ------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-        @*<div class="footer">
-
-            <div class="footerLeft">
-
-                <div class="upperContent">
-                    <a href="#">Sign In</a>
-                    <a href="#">Sign In</a>
-                    <a href="#">Sign In</a>
-                    <a href="#">Sign In</a>
-
-
-                </div>
-                <div class="lowerContent">
-                    <a href="#">Sign In</a>
-                    <a href="#">Sign In</a>
-
-                </div>
-
-            </div>
-
-            <div class="footerMiddle">
-                <img id="logo" style="height: 100px; width: 100px;" src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg">
-
-
-
-            </div>
-            <div class="footerRight">
-                <a href="#">Facebook</a>
-                <a href="#">Facebook</a>
-                <a href="#">Facebook</a>
-                <a href="#">Facebook</a>
-
-
-            </div>
-        </div>
-
-    </div>*@
+      
+    
 </body>
 </html>

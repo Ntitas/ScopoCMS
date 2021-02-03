@@ -30,7 +30,7 @@
 <body>
 
     <!-- header -->
-    <div class="container">
+    <div class="containerCust">
         <partial name="_HeaderPartial" />
 
         <div class="picContainer">
@@ -47,10 +47,10 @@
 
                         <div class="latestContent">
                             <img src=@Url.Content(item.imagePath) alt="">
-                            <p>
+                            <div>
                                 <a asp-action="SeePost" asp-controller="Posts" asp-route-id="@item.postID">@item.title</a>
-                                @item.description
-                            </p>
+                                @Html.Raw(@item.description);
+                            </div>
 
                         </div>
                     }
@@ -107,8 +107,7 @@
                         <div class="webContent">
                             <img src=@Url.Content(item.imagePath) alt="">
                             <div class="webContentItem">
-                                <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
-                                <h4>@item.title</h4>
+                                <a asp-action="SeePost" asp-controller="Posts" asp-route-id="@item.postID">@item.title</a>
                                 <p>
                                     BY @item.author
                                     @item.publishDate
@@ -187,8 +186,7 @@
                                 <div class="mostpopularleftContent">
                                     <img src=@Url.Content(item.imagePath) alt="">
                                     <div class="webContentItem">
-                                        <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
-                                        <h4>@item.title</h4>
+                                        <a asp-action="SeePost" asp-controller="Posts" asp-route-id="@item.postID">@item.title</a>
                                         <p>
                                             BY @item.author
                                             JUNE 7, 2020
@@ -249,11 +247,10 @@
                                 <div class="mostpopularrightContent">
                                     <img src=@Url.Content(item.imagePath) alt="">
                                     <div class="webContentItem">
-                                        <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
-                                        <h4>@item.title</h4>
-                                        <p>BY @item.author</p>
-                                        <p>@item.publishDate.ToShortDateString();</p>
+                                        <a asp-action="SeePost" asp-controller="Posts" asp-route-id="@item.postID">@item.title</a>
                                         <p>
+                                            BY @item.author
+                                            JUNE 7, 2020
                                             6 MINS READ
                                             0 SHARES
                                         </p>
@@ -262,46 +259,6 @@
 
                             }
                         }
-                        @*<div class="mostpopularrightContent">
-                            <img src="hh.jpg" alt="">
-                            <div class="webContentItem">
-                                <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
-                                <h4>The Red Chart</h4>
-                                <p>
-                                    BY AAFAQ HAMEED
-                                    JUNE 7, 2020
-                                    6 MINS READ
-                                    0 SHARES
-                                </p>
-                            </div>
-                        </div>
-                        <div class="mostpopularrightContent">
-                            <img src="hh.jpg" alt="">
-                            <div class="webContentItem">
-                                <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
-                                <h4>The Red Chart</h4>
-                                <p>
-                                    BY AAFAQ HAMEED
-                                    JUNE 7, 2020
-                                    6 MINS READ
-                                    0 SHARES
-                                </p>
-                            </div>
-                        </div>
-                        <div class="mostpopularrightContent">
-                            <img src="hh.jpg" alt="">
-                            <div class="webContentItem">
-                                <a href="#">SHORT STORIES, WEB EXCLUSIVES</a>
-                                <h4>The Red Chart</h4>
-                                <p>
-                                    BY AAFAQ HAMEED
-                                    JUNE 7, 2020
-                                    6 MINS READ
-                                    0 SHARES
-                                </p>
-                            </div>
-
-                        </div>*@
                     </div>
 
                 </div>
