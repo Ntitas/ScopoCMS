@@ -21,92 +21,62 @@ namespace ScopoCMS.Web.Migrations
 
             modelBuilder.Entity("ScopoCMS.Web.Models.Category", b =>
                 {
-                    b.Property<int>("categoryID")
+                    b.Property<int>("CategoryID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("categoryID");
+                    b.HasKey("CategoryID");
 
-                    b.ToTable("categories");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ScopoCMS.Web.Models.Post", b =>
                 {
-                    b.Property<int>("postID")
+                    b.Property<int>("PostID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("author")
+                    b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("categoryID")
+                    b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
-                    b.Property<string>("description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("imagePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("publishDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("tags")
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("title")
+                    b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("postID");
+                    b.Property<DateTime>("PublishDate")
+                        .HasColumnType("datetime2");
 
-                    b.HasIndex("categoryID");
-
-                    b.ToTable("posts");
-                });
-
-            modelBuilder.Entity("ScopoCMS.Web.Models.PostSection", b =>
-                {
-                    b.Property<int>("PostSectionID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("PostID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SectionID")
-                        .HasColumnType("int");
-
-                    b.HasKey("PostSectionID");
-
-                    b.ToTable("PostSection");
-                });
-
-            modelBuilder.Entity("ScopoCMS.Web.Models.Section", b =>
-                {
-                    b.Property<int>("sectionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("name")
+                    b.Property<string>("Tags")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("sectionId");
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("sections");
+                    b.HasKey("PostID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("ScopoCMS.Web.Models.Post", b =>
                 {
                     b.HasOne("ScopoCMS.Web.Models.Category", "Category")
                         .WithMany("Posts")
-                        .HasForeignKey("categoryID")
+                        .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
