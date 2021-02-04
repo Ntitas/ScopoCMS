@@ -7,8 +7,8 @@ namespace ScopoCMS.Web.Models
 {
     public class Category
     {
-        public int categoryID { get; set; }
-        public string name { get; set; }        
+        public int CategoryID { get; set; }
+        public string Name { get; set; }
         public ICollection<Post> Posts { get; set; }
     }
 }

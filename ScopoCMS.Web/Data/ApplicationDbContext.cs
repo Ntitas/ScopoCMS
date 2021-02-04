@@ -13,7 +13,5 @@ namespace ScopoCMS.Web.Data
             : base(options)
         {
         }
-        public DbSet<ScopoCMS.Web.Models.Role> Role { get; set; }
-
     }
 }

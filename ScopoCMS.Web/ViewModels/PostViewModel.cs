@@ -7,20 +7,16 @@ namespace ScopoCMS.Web.ViewModels
 {
     public class PostViewModel
     {
-        public int postID { get; set; }
-        public string author { get; set; }
-        public string title { get; set; }
+        public int PostID { get; set; }
+        public string Author { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string ImagePath { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime PublishDate { get; set; }
+        public string Tags { get; set; }
 
-        public DateTime publishDate { get; set; }
-        public int categoryID { get; set; }
-
-        public string tags { get; set; }
-
-        public string description { get; set; }
-
-        public string imagePath { get; set; }
-        public int sectionId { get; set; }
-        public string  sectionname { get; set; }
-
+        public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
     }
 }
