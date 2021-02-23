@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="Uploads\Images\" />
     <Folder Include="Uploads\Files\" />
     <Folder Include="wwwroot\Images\" />
