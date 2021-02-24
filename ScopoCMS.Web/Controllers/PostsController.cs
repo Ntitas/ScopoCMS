@@ -6,16 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ScopoCMS.Web.Models;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ScopoCMS.Web.Controllers
 {
     public class PostsController : Controller
     {
         private readonly CMSDbContext _context;
+        private readonly IWebHostEnvironment _appEnvironment;
 
-        public PostsController(CMSDbContext context)
+        public PostsController(CMSDbContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         // GET: Posts
@@ -47,7 +52,7 @@ namespace ScopoCMS.Web.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID");
+            ViewBag.categories= new SelectList(_context.Categories, "CategoryID", "Name");
             return View();
         }
 
@@ -56,20 +61,30 @@ namespace ScopoCMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PostID,Author,Title,Description,ImagePath,CreatedDate,PublishDate,Tags,CategoryID")] Post post)
+        public async Task<IActionResult> Create(Post post, IFormFile image)
         {
-            if (ModelState.IsValid)
+            var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+            var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(image.FileName);
+            using (var fileStream = new FileStream(Path.Combine(imgpath, fileName), FileMode.Create))
             {
-                _context.Add(post);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                await image.CopyToAsync(fileStream);
+                string filePath = "uploads\\img\\" + fileName;
+                post.ImagePath = "~/Images/"+fileName;
+                post.ShortDesc = post.Description.Substring(0, 150);
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(post);
+                    await _context.SaveChangesAsync();
+                }
+
+                ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name",post.CategoryID);
+                return View(post);
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", post.CategoryID);
-            return View(post);
         }
 
-        // GET: Posts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+            // GET: Posts/Edit/5
+            public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -81,7 +96,7 @@ namespace ScopoCMS.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", post.CategoryID);
+            ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
             return View(post);
         }
 
@@ -90,7 +105,7 @@ namespace ScopoCMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PostID,Author,Title,Description,ImagePath,CreatedDate,PublishDate,Tags,CategoryID")] Post post)
+        public async Task<IActionResult> Edit(int id, Post post)
         {
             if (id != post.PostID)
             {
@@ -101,6 +116,7 @@ namespace ScopoCMS.Web.Controllers
             {
                 try
                 {
+                    post.ShortDesc = post.Description.Substring(0, 150);
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
@@ -117,7 +133,7 @@ namespace ScopoCMS.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", post.CategoryID);
+            ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
             return View(post);
         }
 
@@ -155,5 +171,19 @@ namespace ScopoCMS.Web.Controllers
         {
             return _context.Posts.Any(e => e.PostID == id);
         }
+
+        public async Task<IActionResult> ManagePost()
+        {
+            var cMSDbContext = _context.Posts.Include(p => p.Category);
+            return View(await cMSDbContext.ToListAsync());
+        }
+
+
+
+
+
+
+
+
     }
 }

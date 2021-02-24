@@ -3,14 +3,22 @@
 @{
     ViewData["Title"] = "Create";
 }
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+    tinymce.init({
+        selector: '#editor'
+    });
+</script>
+
 
 <h1>Create</h1>
 
 <h4>Post</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="col-md-10">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Author" class="control-label"></label>
@@ -22,15 +30,15 @@
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <textarea asp-for="Description" id="editor">Description</textarea>
             </div>
+
             <div class="form-group">
-                <label asp-for="ImagePath" class="control-label"></label>
-                <input asp-for="ImagePath" class="form-control" />
-                <span asp-validation-for="ImagePath" class="text-danger"></span>
+                <label>Upload Post Image</label>
+                <input name="image" type="file" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="CreatedDate" class="control-label"></label>
@@ -48,8 +56,8 @@
                 <span asp-validation-for="Tags" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryID" class="control-label"></label>
-                <select asp-for="CategoryID" class ="form-control" asp-items="ViewBag.CategoryID"></select>
+                <label asp-for="CategoryID" class="control-label">Select Category</label>
+                <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.categories"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -57,6 +65,7 @@
         </form>
     </div>
 </div>
+
 
 <div>
     <a asp-action="Index">Back to List</a>
