@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ScopoCMS.Web.Migrations
 {
-    public partial class CreateCMSInitialSchema : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,9 +11,9 @@ namespace ScopoCMS.Web.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CategoryID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -24,16 +24,17 @@ namespace ScopoCMS.Web.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    PostID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PublishDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Tags = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryID = table.Column<int>(type: "int", nullable: false)
+                    PostID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Author = table.Column<string>(type: "TEXT", nullable: true),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    ShortDesc = table.Column<string>(type: "TEXT", nullable: true),
+                    ImagePath = table.Column<string>(type: "TEXT", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PublishDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Tags = table.Column<string>(type: "TEXT", nullable: true),
+                    CategoryID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
