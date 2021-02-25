@@ -76,7 +76,7 @@ namespace ScopoCMS.Web.Areas.Identity.Pages.Account
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                var res = await _userManager.AddToRoleAsync(user, "User");
+               // var res = await _userManager.AddToRoleAsync(user, "User");
                 if (result.Succeeded)
                 {
                   

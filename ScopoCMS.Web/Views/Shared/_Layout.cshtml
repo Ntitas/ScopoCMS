@@ -22,16 +22,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
-                        </li>
-                   
+                        @if ((string)ViewData["title"] == "Home")
+                        {
+                            @foreach (var item in (List<ScopoCMS.Web.Models.Category>)ViewData["CatList"])
+                            {
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="/Posts/ShowPostsByCategory/@item.CategoryID">@item.Name</a>
+                                </li>
+
+                            }
+                        }
+
+
+
                     </ul>
-                    <partial name="_LoginPartial" />
+
                 </div>
+                <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>

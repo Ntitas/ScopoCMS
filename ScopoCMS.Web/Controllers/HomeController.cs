@@ -18,10 +18,12 @@ namespace ScopoCMS.Web.Controllers
             _logger = logger;
              _context = context;
         }
-       
+
+        
         public async Task<IActionResult> Index()
         {
             var cMSDbContext = _context.Posts.Include(p => p.Category);
+            ViewData["CatList"] = await _context.Categories.ToListAsync();
 
             return View(await cMSDbContext.ToListAsync());
         }

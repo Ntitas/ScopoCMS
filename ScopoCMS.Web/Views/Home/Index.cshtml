@@ -4,12 +4,16 @@
 @{
     ViewData["Title"] = "Home";
     int i = 0;
-    string thumbnailText = "";
+
 }
 
 <style>
-    body{
-        background-color:lightgray;
+    body {
+        background-color: lightgray;
+    }
+
+    @@font-face {
+        src: url('../../wwwroot/css/Niladri Ratna.ttf')
     }
 </style>
 <div class="row" style="margin-bottom:50px;">
@@ -28,7 +32,9 @@
                     <div class="carousel-item active">
                         <img src="@Url.Content(item.ImagePath)" class="d-block w-100" style="height:400px;" alt="...">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>@item.Title</h5>
+                            <h5 class="card-title">
+                                <a href="/Posts/PostDetails/@item.PostID" style="text-decoration:none; color:black;">@item.Title</a>
+                            </h5>
 
                         </div>
                     </div>
@@ -36,9 +42,11 @@
                 else
                 {
                     <div class="carousel-item ">
-                        <img src="@Url.Content(item.ImagePath)" class="d-block w-100" style="height:400px;"alt="...">
+                        <img src="@Url.Content(item.ImagePath)" class="d-block w-100" style="height:400px;" alt="...">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>@item.Title</h5>
+                            <h5 class="card-title">
+                                <a href="/Posts/PostDetails/@item.PostID" style="text-decoration:none; color:black;">@item.Title</a>
+                            </h5>
 
                         </div>
                     </div>
@@ -74,10 +82,13 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">@item.Title</h5>
+                            <h5 class="card-title">
+                                <a href="/Posts/PostDetails/@item.PostID" style="text-decoration:none; color:black;">@item.Title</a>
+                            </h5>
                             <p class="card-text">
                                 @Html.Raw(item.ShortDesc)
                             </p>
+
                             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                         </div>
                     </div>
@@ -103,10 +114,14 @@
                 <div class="card" style="height:100%">
                     <img style="height:60%;" src="@Url.Content(item.ImagePath)" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">@item.Title</h5>
+                        <h5 class="card-title">
+                            <a href="/Posts/PostDetails/@item.PostID" style="text-decoration:none; color:black;">@item.Title</a>
+                        </h5>
                         <p class="card-text">
-                           @Html.Raw(item.ShortDesc)....
+                            @Html.Raw(item.ShortDesc)....
                         </p>
+
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                     </div>
                 </div>
             </div>
@@ -132,11 +147,15 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <h5 class="card-title">@item.Title</h5>
+                                    <h5 class="card-title">
+                                        <a href="/Posts/PostDetails/@item.PostID" style="text-decoration:none; color:black;">@item.Title</a>
+                                    </h5>
                                     <p class="card-text">
                                         @Html.Raw(item.ShortDesc)
                                     </p>
+
                                     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
                                 </div>
                             </div>
                         </div>

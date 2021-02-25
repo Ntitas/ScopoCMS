@@ -19,10 +19,10 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.ShortDesc)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
+                Image
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
@@ -49,10 +49,10 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => item.ShortDesc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImagePath)
+                <img style="height:200px;width:300px;" src="@Url.Content(item.ImagePath)" alt="None" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)
