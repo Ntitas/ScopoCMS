@@ -61,39 +61,48 @@
 </div>
 
 
-<div class="row m-3">
+<div class="row">
 
     @foreach (var item in Model)
     {
+        
 
 
         if (item.CategoryID == 1)
         {
             System.TimeSpan d = DateTime.Now.Subtract(item.PublishDate);
-            if(d.Hours>0)
+            if (d.Hours > 0)
             {
-                 text = "Last Updated " + d.Hours + "hrs ago";
+                text = "Last Updated " + d.Hours + "hrs ago";
+            }
+            else if (d.Hours > 24)
+            {
+                text = "Last Updated " + d.Days + "days ago";
             }
             else
             {
-                 text = "Last Updated " + d.Minutes + "min ago";
+                text = "Last Updated " + d.Minutes + "min ago";
             }
+            <div class="col-md-6 ">
+                <div class=" card  " onclick="redirect()">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img style="height:100%;width:100%;" src="@Url.Content(item.ImagePath)" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="/Posts/PostDetails/@item.PostID" style="text-decoration:none; color:black;">@item.Title</a>
+                                </h5>
+                                
+                                <p class="card-text">
+                                    @Html.Raw(item.ShortDesc)
+                                </p>
+                                <p><small class="text-muted"></small> @text </p>
 
-            <div class="col-md-6 card p-md-4">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img style="height:100%;width:100%;" src="@Url.Content(item.ImagePath)" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <a href="/Posts/PostDetails/@item.PostID" style="text-decoration:none; color:black;">@item.Title</a>
-                            </h5>
-                            <p class="card-text">
-                                @Html.Raw(item.ShortDesc)
-                            </p>
 
-                            <p class="card-text"><small class="text-muted"></small> @text </p>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -118,6 +127,10 @@
             if (d.Hours > 0)
             {
                 text = "Last Updated " + d.Hours + "hrs ago";
+            }
+            else if (d.Hours > 24)
+            {
+                text = "Last Updated " + d.Days + "days ago";
             }
             else
             {
@@ -157,11 +170,14 @@
                 {
                     text = "Last Updated " + d.Hours + "hrs ago";
                 }
+                else if (d.Hours > 24)
+                {
+                    text = "Last Updated " + d.Days + "days ago";
+                }
                 else
                 {
                     text = "Last Updated " + d.Minutes + "min ago";
-                }
-                <div class="row m-1">
+                }<div class="row m-1">
                     <div class="col-md-12 card p-2">
                         <div class="row g-0">
                             <div class="col-md-4">

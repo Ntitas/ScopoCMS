@@ -16,20 +16,38 @@
     }
 </style>
 <div class="row">
-    <div class="col-md-6 p-md-4">
-        <h5 class="text-md-left">@Model.Category.Name</h5>
-        <h3>@Model.Title</h3>
-        <h6>@Model.Author</h6>
-        <span>@Model.PublishDate</span>
+
+    <div class="col">
+        <div class="card" style="height:100%">
+            <img style="height:400px;width:60%" src="@Url.Content(Model.ImagePath)" alt="none" />
+            <div class="card-body">
+             
+                    @Model.Author||
+                    <span>@Model.PublishDate.ToShortDateString()</span>
+             
+                <h3 class="card-title">
+                    @Model.Title
+                </h3>
+                <p class="card-text">
+                 @Html.Raw(Model.Description)
+                </p>
+            </div>
+        </div>
     </div>
-</div>
+    @*<div class="col-md-6 p-md-4">
+                <h5 class="text-md-left">@Model.Category.Name</h5>
+                <h3>@Model.Title</h3>
+                <h6>@Model.Author</h6>
+                <span>@Model.PublishDate</span>
+            </div>
+        </div>
 
 
-<div class="row">
-    <div class="col-md-12 p-md-4 align-content-md-center">
-        <img style="height:400px;width:60%" src="@Url.Content(Model.ImagePath)" alt="none" />
-        <p> @Html.Raw(Model.Description)</p>
-    </div>
+        <div class="row">
+            <div class="col-md-12 p-md-4 align-content-md-center">
+                <img style="height:400px;width:60%" src="@Url.Content(Model.ImagePath)" alt="none" />
+                <p> @Html.Raw(Model.Description)</p>
+            </div>*@
 
 
 </div>
