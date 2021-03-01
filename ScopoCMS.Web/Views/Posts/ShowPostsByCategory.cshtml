@@ -4,6 +4,7 @@
 *@
 @{
     ViewData["Title"] = "Home";
+    string text = "";
 }
 
 <style>
@@ -20,9 +21,22 @@
 
     @foreach (var item in Model)
     {
+        System.TimeSpan d = DateTime.Now.Subtract(item.PublishDate);
+        if (d.Hours > 0)
+        {
+            text = d.Hours + " ঘন্টা আগে সর্বশেষ আপডেট হয়েছে ";
+        }
+        else if (d.Hours > 24)
+        {
+            text = d.Days + " দিন আগে সর্বশেষ আপডেট হয়েছে ";
+        }
+        else
+        {
+            text = d.Minutes + " মিনিট আগে সর্বশেষ আপডেট হয়েছে";
+        }
 
 
-        <div class="col-md-6 card p-md-4">
+        <div class="col-md-6 card shadow rounded p-md-4">
             <div class="row g-0">
                 <div class="col-md-4">
                     <img style="height:100%;width:100%;" src="@Url.Content(item.ImagePath)" alt="...">
@@ -35,7 +49,7 @@
                         <p class="card-text">
                             @Html.Raw(item.ShortDesc)
                         </p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <p style="font-family: siyamrupaliANSI;font-size: 10px;color: #8e8c8c"><small class="text-muted"></small> @text </p>
                     </div>
                 </div>
             </div>

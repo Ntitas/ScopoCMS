@@ -18,36 +18,54 @@
 <div class="row">
 
     <div class="col">
-        <div class="card" style="height:100%">
-            <img style="height:400px;width:60%" src="@Url.Content(Model.ImagePath)" alt="none" />
-            <div class="card-body">
-             
-                    @Model.Author||
-                    <span>@Model.PublishDate.ToShortDateString()</span>
-             
-                <h3 class="card-title">
-                    @Model.Title
-                </h3>
-                <p class="card-text">
-                 @Html.Raw(Model.Description)
-                </p>
-            </div>
+        <div class="card shadow rounded"  style="height:100%">
+            <img style="height:400px;width:100%;align-self:center;margin:2px;padding:8px;" src="@Url.Content(Model.ImagePath)" alt="none" />
+
+            <span style="        margin: 2px;
+        padding: 8px;
+        margin-top: 0px;
+        color: #736f73;
+        font-size: 10px;
+        font-family: siyamrupaliANSI"> @Model.Author              ||          @Model.PublishDate.ToShortDateString()</span>
+        <div class="card-body">
+
+
+            <h3 class="card-title">
+                @Model.Title
+            </h3>
+            <p class="card-text">
+                @Html.Raw(Model.Description)
+            </p>
+            <p>
+                <svg width="18" height="18" viewBox="0 -22 512 511" xmlns="http://www.w3.org/2000/svg"><path d="m512 233.820312-212.777344-233.320312v139.203125h-45.238281c-140.273437 0-253.984375 113.710937-253.984375 253.984375v73.769531l20.09375-22.019531c68.316406-74.851562 164.980469-117.5 266.324219-117.5h12.804687v139.203125zm0 0" /></svg>
+                <span style="font-size:10px;"> শেয়ার করুন </span>
+                <a style="        margin: 0px 2px;
+        fill: #e6e7e8;" href="#"> <svg id="facebook" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.538 0-.65.221-.65.778v1.222h2l-.209 2h-1.791v7h-3v-7h-2v-2h2v-2.308c0-1.769.931-2.692 3.029-2.692h1.971v3z" /></svg></a>
+
+                <a style="        margin: 0px 2px;
+        fill: #e6e7e8;
+" href="#">
+                    <svg id="twitter" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" /></svg>
+                </a>
+
+            </p>
         </div>
     </div>
-    @*<div class="col-md-6 p-md-4">
-                <h5 class="text-md-left">@Model.Category.Name</h5>
-                <h3>@Model.Title</h3>
-                <h6>@Model.Author</h6>
-                <span>@Model.PublishDate</span>
-            </div>
+</div>
+@*<div class="col-md-6 p-md-4">
+            <h5 class="text-md-left">@Model.Category.Name</h5>
+            <h3>@Model.Title</h3>
+            <h6>@Model.Author</h6>
+            <span>@Model.PublishDate</span>
         </div>
+    </div>
 
 
-        <div class="row">
-            <div class="col-md-12 p-md-4 align-content-md-center">
-                <img style="height:400px;width:60%" src="@Url.Content(Model.ImagePath)" alt="none" />
-                <p> @Html.Raw(Model.Description)</p>
-            </div>*@
+    <div class="row">
+        <div class="col-md-12 p-md-4 align-content-md-center">
+            <img style="height:400px;width:60%" src="@Url.Content(Model.ImagePath)" alt="none" />
+            <p> @Html.Raw(Model.Description)</p>
+        </div>*@
 
 
 </div>

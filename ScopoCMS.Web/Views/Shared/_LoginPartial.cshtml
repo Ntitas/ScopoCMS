@@ -37,11 +37,16 @@
     }
     else
     {
+        if  ((string)ViewData["Title"] != "Log in")
+        {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">
+                রেজিস্টার
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">লগ-ইন</a>
         </li>
+        }
     }
 </ul>

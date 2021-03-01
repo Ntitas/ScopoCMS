@@ -76,16 +76,27 @@ body {
     font-size:18px;
 }
 
+@font-face{
+    font-family:siyamrupaliANSI;
+    src:url('../Siyam Rupali ANSI.ttf');
+}
+
 body {
     font-family: customBanglaFont;
     background-color: #e6e7e8;
     
 }
 
-.card-title {
-    background-color: #FFF;
+.card-titleCarousel {
+    background-color: white;
+    opacity:0.6;
     padding: 8px;
 }
+
+#tag{
+    opacity:1;
+}
+
 
 #facebook:hover {
     fill: #4267B2;
@@ -96,6 +107,7 @@ body {
 #twitter:hover {
     fill: #00acee;
 }
+
 
 
 
