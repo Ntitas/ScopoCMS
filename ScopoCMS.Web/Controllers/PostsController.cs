@@ -31,21 +31,6 @@ namespace ScopoCMS.Web.Controllers
             return View(await cMSDbContext.ToListAsync());
         }
 
-        public async Task<IActionResult> ShowPostsByCategory(int id)
-        {
-            var cMSDbContext = _context.Posts.Where(p=>p.CategoryID==id).Include(p=>p.Category).ToListAsync();
-            ViewData["CatList"] = await _context.Categories.ToListAsync();
-
-            return View(await cMSDbContext);
-        }
-        public async Task<IActionResult> PostDetails(int id)
-        {
-            var cMSDbContext = _context.Posts.Where(p => p.PostID == id).Include(p => p.Category).FirstOrDefaultAsync();
-
-            ViewData["CatList"] = await _context.Categories.ToListAsync();
-            return View(await cMSDbContext);
-        }
-
 
 
         // GET: Posts/Details/5

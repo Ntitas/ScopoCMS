@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ScopoCMS.Web.Data;
 using ScopoCMS.Web.Models;
+using ScopoCMS.Web.ViewModels;
+using System.Configuration;
 
 namespace ScopoCMS.Web
 {
@@ -20,6 +22,7 @@ namespace ScopoCMS.Web
         {
           
             Configuration = configuration;
+          
         }
 
        
@@ -40,11 +43,13 @@ namespace ScopoCMS.Web
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
