@@ -27,7 +27,7 @@ namespace ScopoCMS.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var cMSDbContext = _context.Posts.Include(p => p.Category);
-           
+
             return View(await cMSDbContext.ToListAsync());
         }
 
@@ -55,7 +55,7 @@ namespace ScopoCMS.Web.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
-            ViewBag.categories= new SelectList(_context.Categories, "CategoryID", "Name");
+            ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name");
             return View();
         }
 
@@ -66,10 +66,10 @@ namespace ScopoCMS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Post post, IFormFile image)
         {
-            if(image==null)
+            if (image == null)
             {
                 post.ImagePath = "~/Images/noimage.png";
-                post.ShortDesc= post.Description.Substring(0, 150); ;
+                post.ShortDesc = post.Description.Substring(0, 150); ;
 
                 if (ModelState.IsValid)
                 {
@@ -81,30 +81,30 @@ namespace ScopoCMS.Web.Controllers
                 return View(post);
             }
             else
-            { 
-            var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
-            var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(image.FileName);
-            using (var fileStream = new FileStream(Path.Combine(imgpath, fileName), FileMode.Create))
             {
-                await image.CopyToAsync(fileStream);
-                string filePath = "uploads\\img\\" + fileName;
-                post.ImagePath = "~/Images/" + fileName;
-                post.ShortDesc = post.Description.Substring(0, 150);
-
-                if (ModelState.IsValid)
+                var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+                var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(image.FileName);
+                using (var fileStream = new FileStream(Path.Combine(imgpath, fileName), FileMode.Create))
                 {
-                    _context.Add(post);
-                    await _context.SaveChangesAsync();
-                }
+                    await image.CopyToAsync(fileStream);
+                    string filePath = "uploads\\img\\" + fileName;
+                    post.ImagePath = "~/Images/" + fileName;
+                    post.ShortDesc = post.Description.Substring(0, 150);
 
-                ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
-                return View(post);
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(post);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
+                    return View(post);
+                }
             }
         }
-        }
 
-            // GET: Posts/Edit/5
-            public async Task<IActionResult> Edit(int? id)
+        // GET: Posts/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -125,85 +125,96 @@ namespace ScopoCMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Post post)
+        public async Task<IActionResult> Edit(int id, Post post, IFormFile image)
         {
             if (id != post.PostID)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (image == null)
             {
-                try
+                post.ImagePath = "~/Images/noimage.png";
+                post.ShortDesc = post.Description.Substring(0, 150); ;
+
+                if (ModelState.IsValid)
                 {
-                    post.ShortDesc = post.Description.Substring(0, 150);
-                    _context.Update(post);
+                    _context.Add(post);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
+                return View(post);
+            }
+            else
+            {
+                var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+                var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(image.FileName);
+                using (var fileStream = new FileStream(Path.Combine(imgpath, fileName), FileMode.Create))
                 {
-                    if (!PostExists(post.PostID))
+                    await image.CopyToAsync(fileStream);
+                    string filePath = "uploads\\img\\" + fileName;
+                    post.ImagePath = "~/Images/" + fileName;
+                    post.ShortDesc = post.Description.Substring(0, 150);
+
+                    if (ModelState.IsValid)
+                    {
+                        _context.Update(post);
+                        await _context.SaveChangesAsync();
+                    }
+                    ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
+                    return View(post);
+                }
+            }
+        }
+
+                // GET: Posts/Delete/5
+                public async Task<IActionResult> Delete(int? id)
+                {
+                    if (id == null)
                     {
                         return NotFound();
                     }
-                    else
+
+                    var post = await _context.Posts
+                        .Include(p => p.Category)
+                        .FirstOrDefaultAsync(m => m.PostID == id);
+                    if (post == null)
                     {
-                        throw;
+                        return NotFound();
                     }
+
+                    return View(post);
                 }
-                return RedirectToAction(nameof(Index));
+
+                // POST: Posts/Delete/5
+                [HttpPost, ActionName("Delete")]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> DeleteConfirmed(int id)
+                {
+                    var post = await _context.Posts.FindAsync(id);
+                    _context.Posts.Remove(post);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                private bool PostExists(int id)
+                {
+                    return _context.Posts.Any(e => e.PostID == id);
+                }
+
+                public async Task<IActionResult> ManagePost()
+                {
+                    var cMSDbContext = _context.Posts.Include(p => p.Category);
+                    return View(await cMSDbContext.ToListAsync());
+                }
+
+
+
+
+
+
+
+
             }
-            ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
-            return View(post);
         }
-
-        // GET: Posts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var post = await _context.Posts
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.PostID == id);
-            if (post == null)
-            {
-                return NotFound();
-            }
-
-            return View(post);
-        }
-
-        // POST: Posts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var post = await _context.Posts.FindAsync(id);
-            _context.Posts.Remove(post);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool PostExists(int id)
-        {
-            return _context.Posts.Any(e => e.PostID == id);
-        }
-
-        public async Task<IActionResult> ManagePost()
-        {
-            var cMSDbContext = _context.Posts.Include(p => p.Category);
-            return View(await cMSDbContext.ToListAsync());
-        }
-
-
-
-
-
-
-
-
-    }
-}
