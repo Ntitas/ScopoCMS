@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ScopoCMS.Web.ViewModels.MediaGalleryViewModel
+
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="MediaGallery" asp-controller="Home" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="d-flex justify-content-center wrapper align-items-center">
+                        <input asp-for="images" type="file" class="form-control" multiple>
+                        <div class="d-flex">
+                           
+                            <input type="submit" value="Upload" class="btn btn-primary" />
+                        </div>
+                    </div>
+
+
+                </form>
+                <div class="mt-4">
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+

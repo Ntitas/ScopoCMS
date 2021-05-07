@@ -19,6 +19,9 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="MediaGallery">Media</a>
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
@@ -37,16 +40,16 @@
     }
     else
     {
-        if  ((string)ViewData["Title"] != "Log in")
+        if ((string)ViewData["Title"] != "Log in")
         {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">
-                রেজিস্টার
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">লগ-ইন</a>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">
+                    রেজিস্টার
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">লগ-ইন</a>
+            </li>
         }
     }
 </ul>

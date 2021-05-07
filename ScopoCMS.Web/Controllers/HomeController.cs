@@ -9,6 +9,9 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using ScopoCMS.Web.ViewModels;
 using Microsoft.Extensions.Configuration;
+using System.IO;
+using System;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ScopoCMS.Web.Controllers
 {
@@ -17,18 +20,20 @@ namespace ScopoCMS.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly CMSDbContext _context;
         private readonly IConfiguration _configuration;
-   
+        private readonly IWebHostEnvironment _appEnvironment;
 
-        public HomeController(ILogger<HomeController> logger ,  CMSDbContext context,IConfiguration configuration)
+
+        public HomeController(ILogger<HomeController> logger, CMSDbContext context, IConfiguration configuration,IWebHostEnvironment appEnvironment)
         {
             _logger = logger;
-             _context = context;
+            _context = context;
             _configuration = configuration;
-           
+            _appEnvironment = appEnvironment;
+
 
         }
 
-        
+
         public async Task<IActionResult> Index()
         {
             var themeName = _configuration.GetSection("MySettings").GetSection("ThemeName").Value;
@@ -49,7 +54,7 @@ namespace ScopoCMS.Web.Controllers
             var themeName = _configuration.GetSection("MySettings").GetSection("ThemeName").Value;
             var cMSDbContext = _context.Posts.Where(p => p.CategoryID == id).Include(p => p.Category).ToListAsync();
             ViewData["CatList"] = await _context.Categories.ToListAsync();
-            
+
             return View("Views/Shared/Themes/" + themeName + "/ShowPostsByCategory.cshtml", await cMSDbContext);
         }
         public async Task<IActionResult> PostDetails(int id)
@@ -58,12 +63,38 @@ namespace ScopoCMS.Web.Controllers
             var cMSDbContext = _context.Posts.Where(p => p.PostID == id).Include(p => p.Category).FirstOrDefaultAsync();
 
             ViewData["CatList"] = await _context.Categories.ToListAsync();
-            return View("Views/Shared/Themes/"+themeName+"/PostDetails.cshtml", await cMSDbContext);
+            return View("Views/Shared/Themes/" + themeName + "/PostDetails.cshtml", await cMSDbContext);
         }
 
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult MediaGallery()
+        {
+            return View();
+        }
+
+  
+        [HttpPost]
+        public IActionResult MediaGallery(MediaGalleryViewModel model)
+        {
+          
+
+            foreach (var image in model.images)
+            {
+
+
+                var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+                var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(image.FileName);
+                using (var fileStream = new FileStream(Path.Combine(imgpath, fileName), FileMode.Create))
+                {
+                    image.CopyToAsync(fileStream);
+                    string filePath = "uploads\\img\\" + fileName;
+                }
+            }
+                return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,0 +1,168 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    int i = 0;
+    ViewData["Title"] = "Kontoor Products";
+}
+
+
+<style>
+    body {
+        font-family: "Montserrat";
+    }
+
+    .container.gallery-container {
+        background-color: #fff;
+        color: #35373a;
+        min-height: 100vh;
+        padding: 30px 50px;
+    }
+
+    .gallery-container h1 {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .gallery-container p.page-description {
+        text-align: center;
+        margin: 25px auto;
+        font-size: 18px;
+        color: #999;
+    }
+
+    .tz-gallery {
+        padding: 40px;
+    }
+
+        /* Override bootstrap column paddings */
+        .tz-gallery .row > div {
+            padding: 2px;
+        }
+
+        .tz-gallery .lightbox img {
+            width: 100%;
+            border-radius: 0;
+            position: relative;
+        }
+
+        .tz-gallery .lightbox:before {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -13px;
+            margin-left: -13px;
+            opacity: 0;
+            color: #fff;
+            font-size: 26px;
+            font-family: 'Glyphicons Halflings';
+            content: '\e003';
+            pointer-events: none;
+            z-index: 9000;
+            transition: 0.4s;
+        }
+
+
+        .tz-gallery .lightbox:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            background-color: rgba(46, 132, 206, 0.7);
+            content: '';
+            transition: 0.4s;
+        }
+
+        .tz-gallery .lightbox:hover:after,
+        .tz-gallery .lightbox:hover:before {
+            opacity: 1;
+        }
+
+    .baguetteBox-button {
+        background-color: transparent !important;
+    }
+
+    @@media(max-width: 768px) {
+        body {
+            padding: 0;
+        }
+    }
+
+
+
+
+    img {
+        max-width: 100%;
+    }
+
+    .gallery {
+        background-color: transparent;
+        padding: 80px 0;
+    }
+
+        .gallery img {
+            background-color: #ffffff;
+            padding: 5px;
+            width: 100%;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+    #gallery-modal .modal-img {
+        width: 100%;
+    }
+</style>
+
+<section class="gallery min-vh-100">
+    <div class="container-lg ">
+
+        <div class="row gy-4 row-cols-1 row-cols-sm-2 row-cols-md-3 m-3" style="display:flex;">
+
+            @foreach (var item in ViewBag.paths)
+            {
+
+
+                <div class="col-md-3 col-sm-4 mt-3">
+                    <img data-bs-dismiss="modal" id="@item" onclick="setImage('@item')" style="height:50px; object-fit:contain;object-position:center;" src=@Url.Content(item) class="gallery-item" alt="gallery">
+                </div>
+
+
+            }
+        </div>
+    </div>
+
+
+
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="gallery-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="display:flex;justify-content:center;align-items:center;">
+        <div class="modal-content" style="height:80%;width:80%; display:flex;justify-content:center;align-items:center;">
+            <div class="modal-body text-center col-12">
+                <img style="max-height:400px;object-fit:contain" src="/images/1.jpg" class="modal-img" alt="modal img">
+            </div>
+        </div>
+    </div>
+</div>>
+
+<script>
+
+    function setImage(path) {
+        console.log("hit");
+        var elm = document.getElementById('featured');
+        var p = document.getElementById('path');
+        p.value = path;
+        elm.src = path;
+
+
+    }
+    //document.addEventListener("click", function (e) {
+    //    if (e.target.classList.contains("gallery-item")) {
+    //        const src = e.target.getAttribute("src");
+    //        document.querySelector(".featured").src = src;
+
+    //})
+</script>

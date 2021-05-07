@@ -56,6 +56,21 @@ namespace ScopoCMS.Web.Controllers
         public IActionResult Create()
         {
             ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name");
+            var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+            string[] filePaths = Directory.GetFiles(imgpath);
+            List<string> p = new List<string>();
+
+            foreach (var item in filePaths)
+            {
+                var itemPath = Path.GetFileName(item);
+                var url = "/Images/" + itemPath;
+                p.Add(url);
+
+            }
+            ViewBag.paths = p;
+
+
+
             return View();
         }
 
@@ -64,9 +79,9 @@ namespace ScopoCMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Post post, IFormFile image)
+        public async Task<IActionResult> Create(Post post)
         {
-            if (image == null)
+            if (post.ImagePath == null)
             {
                 post.ImagePath = "~/Images/noimage.png";
                 post.ShortDesc = post.Description.Substring(0, 150); ;
@@ -76,32 +91,52 @@ namespace ScopoCMS.Web.Controllers
                     _context.Add(post);
                     await _context.SaveChangesAsync();
                 }
+                var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+                string[] filePaths = Directory.GetFiles(imgpath);
+                List<string> p = new List<string>();
+
+                foreach (var item in filePaths)
+                {
+                    var itemPath = Path.GetFileName(item);
+                    var url = "/Images/" + itemPath;
+                    p.Add(url);
+
+                }
+                ViewBag.paths = p;
+
 
                 ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
                 return View(post);
             }
             else
             {
-                var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
-                var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(image.FileName);
-                using (var fileStream = new FileStream(Path.Combine(imgpath, fileName), FileMode.Create))
+
+                post.ShortDesc = post.Description.Substring(0, 150);
+
+                if (ModelState.IsValid)
                 {
-                    await image.CopyToAsync(fileStream);
-                    string filePath = "uploads\\img\\" + fileName;
-                    post.ImagePath = "~/Images/" + fileName;
-                    post.ShortDesc = post.Description.Substring(0, 150);
-
-                    if (ModelState.IsValid)
-                    {
-                        _context.Add(post);
-                        await _context.SaveChangesAsync();
-                    }
-
-                    ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
-                    return View(post);
+                    _context.Add(post);
+                    await _context.SaveChangesAsync();
                 }
+                var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+                string[] filePaths = Directory.GetFiles(imgpath);
+                List<string> p = new List<string>();
+
+                foreach (var item in filePaths)
+                {
+                    var itemPath = Path.GetFileName(item);
+                    var url = "/Images/" + itemPath;
+                    p.Add(url);
+
+                }
+                ViewBag.paths = p;
+
+
+                ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
+                return RedirectToAction("Index", "Posts");
             }
         }
+
 
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -117,6 +152,18 @@ namespace ScopoCMS.Web.Controllers
                 return NotFound();
             }
             ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
+            var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+            string[] filePaths = Directory.GetFiles(imgpath);
+            List<string> p = new List<string>();
+
+            foreach (var item in filePaths)
+            {
+                var itemPath = Path.GetFileName(item);
+                var url = "/Images/" + itemPath;
+                p.Add(url);
+
+            }
+            ViewBag.paths = p;
             return View(post);
         }
 
@@ -125,14 +172,14 @@ namespace ScopoCMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Post post, IFormFile image)
+        public async Task<IActionResult> Edit(int id, Post post)
         {
             if (id != post.PostID)
             {
                 return NotFound();
             }
 
-            if (image == null)
+            if (post.ImagePath == null)
             {
                 post.ImagePath = "~/Images/noimage.png";
                 post.ShortDesc = post.Description.Substring(0, 150); ;
@@ -148,73 +195,78 @@ namespace ScopoCMS.Web.Controllers
             }
             else
             {
-                var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
-                var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(image.FileName);
-                using (var fileStream = new FileStream(Path.Combine(imgpath, fileName), FileMode.Create))
+                post.ShortDesc = post.Description.Substring(0, 150);
+
+                if (ModelState.IsValid)
                 {
-                    await image.CopyToAsync(fileStream);
-                    string filePath = "uploads\\img\\" + fileName;
-                    post.ImagePath = "~/Images/" + fileName;
-                    post.ShortDesc = post.Description.Substring(0, 150);
-
-                    if (ModelState.IsValid)
-                    {
-                        _context.Update(post);
-                        await _context.SaveChangesAsync();
-                    }
-                    ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
-                    return View(post);
-                }
-            }
-        }
-
-                // GET: Posts/Delete/5
-                public async Task<IActionResult> Delete(int? id)
-                {
-                    if (id == null)
-                    {
-                        return NotFound();
-                    }
-
-                    var post = await _context.Posts
-                        .Include(p => p.Category)
-                        .FirstOrDefaultAsync(m => m.PostID == id);
-                    if (post == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return View(post);
-                }
-
-                // POST: Posts/Delete/5
-                [HttpPost, ActionName("Delete")]
-                [ValidateAntiForgeryToken]
-                public async Task<IActionResult> DeleteConfirmed(int id)
-                {
-                    var post = await _context.Posts.FindAsync(id);
-                    _context.Posts.Remove(post);
+                    _context.Update(post);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
                 }
+                ViewBag.categories = new SelectList(_context.Categories, "CategoryID", "Name", post.CategoryID);
+                var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+                string[] filePaths = Directory.GetFiles(imgpath);
+                List<string> p = new List<string>();
 
-                private bool PostExists(int id)
+                foreach (var item in filePaths)
                 {
-                    return _context.Posts.Any(e => e.PostID == id);
+                    var itemPath = Path.GetFileName(item);
+                    var url = "/Images/" + itemPath;
+                    p.Add(url);
+
                 }
-
-                public async Task<IActionResult> ManagePost()
-                {
-                    var cMSDbContext = _context.Posts.Include(p => p.Category);
-                    return View(await cMSDbContext.ToListAsync());
-                }
-
-
-
-
-
-
-
-
+                ViewBag.paths = p;
+                return RedirectToAction("Index","Posts");
             }
+
         }
+
+        // GET: Posts/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var post = await _context.Posts
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(m => m.PostID == id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return View(post);
+        }
+
+        // POST: Posts/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var post = await _context.Posts.FindAsync(id);
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool PostExists(int id)
+        {
+            return _context.Posts.Any(e => e.PostID == id);
+        }
+
+        public async Task<IActionResult> ManagePost()
+        {
+            var cMSDbContext = _context.Posts.Include(p => p.Category);
+            return View(await cMSDbContext.ToListAsync());
+        }
+
+
+
+
+
+
+
+
+    }
+}
