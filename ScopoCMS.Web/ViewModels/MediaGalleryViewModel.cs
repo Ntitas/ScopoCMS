@@ -9,7 +9,8 @@ namespace ScopoCMS.Web.ViewModels
     public class MediaGalleryViewModel
     {
 
-        public List<IFormFile> images { get; set; }
+        //public List<IFormFile> images { get; set; }
+        public IFormFile image { get; set; }
 
 
     }

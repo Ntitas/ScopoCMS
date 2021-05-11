@@ -1,40 +1,110 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
+    ViewBag.Title = "Upload";
 }
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model ScopoCMS.Web.ViewModels.MediaGalleryViewModel
+
+<!-- Filepond stylesheet -->
+<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css" rel="stylesheet" />
+<link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet">
+<link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet">
+
+<style>
+    /**
+        * FilePond Custom Styles
+        */
+    .filepond--drop-label {
+        color: #4c4e53;
+    }
+
+    .filepond--label-action {
+        text-decoration-color: #babdc0;
+    }
+
+    .filepond--panel-root {
+        border-radius: 2em;
+        background-color: #edf0f4;
+        height: 1em;
+    }
+
+    .filepond--item-panel {
+        background-color: #595e68;
+    }
+
+    .filepond--drip-blob {
+        background-color: #7f8a9a;
+    }
+    a{
+        display:none;
+    }
+    .filepond--root filepond filepond--hopper{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:300px;
+    }
+</style>
 
 
-<div class="row justify-content-center">
-    <div class="col-md-10">
-        <div class="card">
-            <div class="card-body">
-                <form asp-action="MediaGallery" asp-controller="Home" enctype="multipart/form-data" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="d-flex justify-content-center wrapper align-items-center">
-                        <input asp-for="images" type="file" class="form-control" multiple>
-                        <div class="d-flex">
-                           
-                            <input type="submit" value="Upload" class="btn btn-primary" />
-                        </div>
-                    </div>
+<h2>Upload Your Medias</h2>
 
 
-                </form>
-                <div class="mt-4">
-                    <a asp-action="Index">Back to List</a>
-                </div>
-            </div>
 
-        </div>
 
-    </div>
-</div>
+        <input style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)" type="file"
+               class="filepond"
+               name="filepond"
+               multiple>
+
+
+
+
+
+
+
+<script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+
+<script>
+    /*
+We want to preview images, so we need to register the Image Preview plugin
+*/
+    FilePond.registerPlugin(
+
+        // encodes the file as base64 data
+        FilePondPluginFileEncode,
+
+        // validates the size of the file
+        FilePondPluginFileValidateSize,
+
+        // corrects mobile image orientation
+        FilePondPluginImageExifOrientation,
+
+        // previews dropped images
+        FilePondPluginImagePreview
+    );
+
+    // Select the file input and use create() to turn it into a pond
+    FilePond.create(
+        document.querySelector('.filepond')
+    );
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
+<script>
+    FilePond.setOptions({
+        server: '@Url.Action("SaveFile", "Home")',
+        onaddfile: function (error, file) {
+            //$("#exampleModal").hide();
+            //$(".modal-backdrop").hide();
+            console.log('File added: [' + error + ']   file: [' + file.id + ']');
+            uploaded[file.id] = file.filename
+        }
+
+        });
+
+
+</script>
 
 

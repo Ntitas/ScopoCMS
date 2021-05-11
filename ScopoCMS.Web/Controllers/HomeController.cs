@@ -70,37 +70,42 @@ namespace ScopoCMS.Web.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public ActionResult SaveFile()
+        {
+            var res = "";
+            MediaGalleryViewModel mv = new MediaGalleryViewModel();
+            if (Request.Form.Files.Count > 0)
+            {
+
+                mv.image = Request.Form.Files[0];
+
+                    if (mv.image != null && mv.image.Length > 0)
+                    {
+                        var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+                    //var es = Guid.NewGuid().ToString();
+                    //var fileName = DateTime.Now.ToLongDateString().Replace(' ','$')+"&&"+DateTime.Now.ToLongTimeString().Replace(' ', '$') + "%%"+es+ Path.GetExtension(mv.image.FileName);
+                    var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(mv.image.FileName);
+                    using (var fileStream = new FileStream(Path.Combine(imgpath, fileName), FileMode.Create))
+                        {
+                        mv.image.CopyTo(fileStream);
+                            string filePath = "uploads\\img\\" +DateTime.Now+fileName;
+                        res = filePath;
+                        }
+                    }
+                
+
+            }
+
+            return Json(res);
+        }
+
+
+
 
         public IActionResult MediaGallery()
         {
             return View();
-        }
-
-  
-        [HttpPost]
-        public IActionResult MediaGallery(MediaGalleryViewModel model)
-        {
-          
-
-            foreach (var image in model.images)
-            {
-
-
-                var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
-                var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(image.FileName);
-                using (var fileStream = new FileStream(Path.Combine(imgpath, fileName), FileMode.Create))
-                {
-                    image.CopyToAsync(fileStream);
-                    string filePath = "uploads\\img\\" + fileName;
-                }
-            }
-                return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

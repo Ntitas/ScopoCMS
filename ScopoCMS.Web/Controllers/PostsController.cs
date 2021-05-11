@@ -77,6 +77,30 @@ namespace ScopoCMS.Web.Controllers
         // POST: Posts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+      [HttpPost]
+        public JsonResult getFiles()
+        {
+            var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
+            string[] filePaths = Directory.GetFiles(imgpath);
+            List<string> p = new List<string>();
+            foreach (var item in filePaths)
+            {
+                
+                var itemPath = Path.GetFileName(item);
+                var url = "/Images/" + itemPath;
+                p.Add(url);
+
+            }
+            var res = p;
+            return Json(res);
+
+        }
+
+
+
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Post post)
