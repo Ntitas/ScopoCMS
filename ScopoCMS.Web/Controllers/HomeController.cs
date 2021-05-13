@@ -23,16 +23,13 @@ namespace ScopoCMS.Web.Controllers
         private readonly IWebHostEnvironment _appEnvironment;
 
 
-        public HomeController(ILogger<HomeController> logger, CMSDbContext context, IConfiguration configuration,IWebHostEnvironment appEnvironment)
+        public HomeController(ILogger<HomeController> logger, CMSDbContext context, IConfiguration configuration, IWebHostEnvironment appEnvironment)
         {
             _logger = logger;
             _context = context;
             _configuration = configuration;
             _appEnvironment = appEnvironment;
-
-
         }
-
 
         public async Task<IActionResult> Index()
         {
@@ -44,11 +41,6 @@ namespace ScopoCMS.Web.Controllers
             return View("Views/Shared/Themes/" + themeName + "/Index.cshtml", await cMSDbContext.ToListAsync());
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult AdminPanel()
-        {
-            return View();
-        }
         public async Task<IActionResult> ShowPostsByCategory(int id)
         {
             var themeName = _configuration.GetSection("MySettings").GetSection("ThemeName").Value;
@@ -57,6 +49,7 @@ namespace ScopoCMS.Web.Controllers
 
             return View("Views/Shared/Themes/" + themeName + "/ShowPostsByCategory.cshtml", await cMSDbContext);
         }
+
         public async Task<IActionResult> PostDetails(int id)
         {
             var themeName = _configuration.GetSection("MySettings").GetSection("ThemeName").Value;
@@ -70,40 +63,8 @@ namespace ScopoCMS.Web.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult SaveFile()
-        {
-            var res = "";
-            MediaGalleryViewModel mv = new MediaGalleryViewModel();
-            if (Request.Form.Files.Count > 0)
-            {
 
-                mv.image = Request.Form.Files[0];
-
-                    if (mv.image != null && mv.image.Length > 0)
-                    {
-                        var imgpath = Path.Combine(_appEnvironment.WebRootPath, "Images");
-                    //var es = Guid.NewGuid().ToString();
-                    //var fileName = DateTime.Now.ToLongDateString().Replace(' ','$')+"&&"+DateTime.Now.ToLongTimeString().Replace(' ', '$') + "%%"+es+ Path.GetExtension(mv.image.FileName);
-                    var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(mv.image.FileName);
-                    using (var fileStream = new FileStream(Path.Combine(imgpath, fileName), FileMode.Create))
-                        {
-                        mv.image.CopyTo(fileStream);
-                            string filePath = "uploads\\img\\" +DateTime.Now+fileName;
-                        res = filePath;
-                        }
-                    }
-                
-
-            }
-
-            return Json(res);
-        }
-
-
-
-
-        public IActionResult MediaGallery()
+        public IActionResult AdminPanel()
         {
             return View();
         }

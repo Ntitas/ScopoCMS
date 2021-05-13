@@ -33,18 +33,12 @@
                         {
                             @foreach (var item in (List<ScopoCMS.Web.Models.Category>)ViewData["CatList"])
                             {
-
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" href="/Home/ShowPostsByCategory/@item.CategoryID">@item.Name</a>
                                 </li>
-
                             }
                         }
-
-
-
                     </ul>
-
                 </div>
                 <partial name="_LoginPartial" />
             </div>
